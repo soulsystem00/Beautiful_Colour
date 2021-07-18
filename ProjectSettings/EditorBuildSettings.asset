@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/BaseCamp_Outside.unity
     guid: 8fc0afd373f1648488702cd5da5cc4fe
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 755194db7c4167b4ab885127b005d0b4
   m_configObjects: {}
