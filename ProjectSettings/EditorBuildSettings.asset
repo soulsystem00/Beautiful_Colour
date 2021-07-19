@@ -6,10 +6,10 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/BaseCamp_Inside.unity
+    path: Assets/Scenes/First_island_BaseCamp_Inside.unity
     guid: 8ee6e8d76fd430e4a9004bb2b2c76d66
   - enabled: 1
-    path: Assets/Scenes/BaseCamp_Outside.unity
+    path: Assets/Scenes/First_island_BaseCamp_Outside.unity
     guid: 8fc0afd373f1648488702cd5da5cc4fe
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
@@ -17,4 +17,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/First_island_forest.unity
     guid: 282bcacf9cd8fc24289528c52cf43fb5
+  - enabled: 1
+    path: Assets/Scenes/First_island_small_forest.unity
+    guid: 734841aad422e34488b8325547234bbc
+  - enabled: 1
+    path: Assets/Scenes/First_island_Village_entrance.unity
+    guid: d9e6af5ca19842d4184fdebf6d46da37
   m_configObjects: {}
