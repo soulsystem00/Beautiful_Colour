@@ -1,13 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Security.Policy;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.iOS;
 
 public class PlayerActions : MonoBehaviour
 {
     public float moveSpeed;
-
+    public LayerMask solidObjectsLayer;
+    IEnumerator coroutine;
     float h;
     float v;
 
@@ -24,6 +26,10 @@ public class PlayerActions : MonoBehaviour
     Rigidbody2D rigid;
     BoxCollider2D collider2D;
 
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -34,10 +40,19 @@ public class PlayerActions : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveFunction1();
+        //MoveFunction1();
 
-        //MoveFunction2();
+        MoveFunction2();
 
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Gate"))
+        {
+            StopCoroutine(coroutine);
+            isMoving = false;
+        }
     }
 
     void MoveFunction1()
@@ -62,7 +77,12 @@ public class PlayerActions : MonoBehaviour
                 targetPos.x += input.x;
                 targetPos.y += input.y;
 
-                StartCoroutine(Move(targetPos, tmp));
+                if(IsWalkable(targetPos))
+                {
+                    coroutine = Move(targetPos, tmp);
+                    StartCoroutine(coroutine);
+                }
+                    
             }
 
         }
@@ -79,5 +99,15 @@ public class PlayerActions : MonoBehaviour
             yield return null;
         }
         isMoving = false;
+    }
+
+    private bool IsWalkable(Vector3 targetPos)
+    {
+        if(Physics2D.OverlapCircle(targetPos, 0.3f, solidObjectsLayer) != null)
+        {
+            return false;
+        }
+
+        return true;
     }
 }

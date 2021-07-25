@@ -7,10 +7,19 @@ using UnityEngine.SceneManagement;
 public class SenceLoader : MonoBehaviour
 {
     public SceneAsset scene;
+
+    public Vector3 char_position;
     // Start is called before the first frame update
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (string.Compare(collision.name, "Ludo 0") == 0)
+        if(collision.CompareTag("Player"))
+        {
             SceneManager.LoadScene(scene.name);
+            collision.transform.position = char_position;
+        }
+        //if (string.Compare(collision.name, "Hero(Clone)") == 0)
+        //{
+
+        //}
     }
 }

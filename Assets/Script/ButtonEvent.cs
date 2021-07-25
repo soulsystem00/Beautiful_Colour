@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class ButtonEvent : MonoBehaviour, IPointerClickHandler
 {
-
+    public Object hero;
     public enum ButtonType
     {
         GameStart,
@@ -20,7 +20,8 @@ public class ButtonEvent : MonoBehaviour, IPointerClickHandler
     {
         if(buttonType == ButtonType.GameStart)
         {
-            SceneManager.LoadScene("BaseCamp_Outside");
+            SceneManager.LoadScene("First_island_BaseCamp_Outside");
+            Instantiate(hero);
         }
     }
 }

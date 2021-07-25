@@ -692,6 +692,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af011b26ed207f5429f4d1ba5acb8301, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hero: {fileID: 2950652432136192246, guid: c9baaeca5b034fb4fb38b4165912a44b, type: 3}
   buttonType: 0
 --- !u!114 &2006028829
 MonoBehaviour:

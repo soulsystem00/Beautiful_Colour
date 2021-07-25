@@ -11,6 +11,11 @@ public class CameraMove : MonoBehaviour
     Transform cam_transform;
 
     Vector3 pos;
+    private void Awake()
+    {
+        Char = GameObject.FindGameObjectWithTag("Player");
+    }
+
     // Start is called before the first frame update
     void Start()
     {
