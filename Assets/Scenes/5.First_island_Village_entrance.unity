@@ -1812,8 +1812,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a9a35fff28be6714f91abbe608b1efc4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  scene: {fileID: 102900000, guid: 5aca4ab8bd3d2aa419cee6b781fa2a40, type: 3}
-  char_position: {x: 7, y: -3, z: 0}
+  scene: {fileID: 102900000, guid: 7562f33dbcf7f7a4484f702567525f64, type: 3}
+  char_position: {x: 6, y: -3, z: 0}
 --- !u!19719996 &822495592
 TilemapCollider2D:
   m_ObjectHideFlags: 0

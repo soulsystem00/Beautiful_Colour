@@ -6,27 +6,36 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/First_island_BaseCamp_Inside.unity
-    guid: 8ee6e8d76fd430e4a9004bb2b2c76d66
-  - enabled: 1
-    path: Assets/Scenes/First_island_BaseCamp_Outside.unity
-    guid: 8fc0afd373f1648488702cd5da5cc4fe
-  - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/Scenes/0.MainMenu.unity
     guid: 755194db7c4167b4ab885127b005d0b4
   - enabled: 1
-    path: Assets/Scenes/First_island_forest.unity
+    path: Assets/Scenes/1.First_island_BaseCamp_Outside.unity
+    guid: 8fc0afd373f1648488702cd5da5cc4fe
+  - enabled: 1
+    path: Assets/Scenes/2.First_island_BaseCamp_Inside.unity
+    guid: 8ee6e8d76fd430e4a9004bb2b2c76d66
+  - enabled: 1
+    path: Assets/Scenes/3.First_island_forest.unity
     guid: 282bcacf9cd8fc24289528c52cf43fb5
   - enabled: 1
-    path: Assets/Scenes/First_island_small_forest.unity
+    path: Assets/Scenes/4.First_island_small_forest.unity
     guid: 734841aad422e34488b8325547234bbc
   - enabled: 1
-    path: Assets/Scenes/First_island_Village_entrance.unity
+    path: Assets/Scenes/5.First_island_Village_entrance.unity
     guid: d9e6af5ca19842d4184fdebf6d46da37
   - enabled: 1
-    path: Assets/Scenes/First_island_village_front.unity
+    path: Assets/Scenes/6.First_Island_front.unity
+    guid: 7562f33dbcf7f7a4484f702567525f64
+  - enabled: 1
+    path: Assets/Scenes/7.First_island_village_back.unity
     guid: 5aca4ab8bd3d2aa419cee6b781fa2a40
   - enabled: 1
-    path: Assets/Scenes/First_island_village_Back.unity
+    path: Assets/Scenes/8.Violet_Castle_1.unity
+    guid: 73a8256ab1686df42b1e883b761f1b8d
+  - enabled: 1
+    path: Assets/Scenes/9.Violet_Castle_2.unity
+    guid: 56ae1fe67728aa647bcc275dba09d74c
+  - enabled: 1
+    path: Assets/Scenes/10.First_island_village_Boss.unity
     guid: c2e2aed2589cb5343b8b6e39f36ea6e5
   m_configObjects: {}
