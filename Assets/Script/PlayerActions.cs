@@ -12,6 +12,8 @@ public class PlayerActions : MonoBehaviour
     IEnumerator coroutine;
     float h;
     float v;
+    
+    bool isHorizontalMove;
 
     float CurX;
     float CurY;
@@ -25,7 +27,7 @@ public class PlayerActions : MonoBehaviour
 
     Rigidbody2D rigid;
     BoxCollider2D collider2D;
-
+    PlayerInput PlayerInput;
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -35,14 +37,18 @@ public class PlayerActions : MonoBehaviour
     void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
+        PlayerInput = GameObject.Find("GameController").GetComponent<PlayerInput>();
     }
 
     // Update is called once per frame
     void Update()
     {
         //MoveFunction1();
-
-        MoveFunction2();
+        if(!PlayerInput.menuactive)
+        {
+            CheckInput();
+            MoveFunction2();
+        }
 
     }
 
@@ -63,26 +69,54 @@ public class PlayerActions : MonoBehaviour
         rigid.velocity = new Vector2(h * moveSpeed, v * moveSpeed);
     }
 
+    void CheckInput()
+    {
+        bool hDown = PlayerInput.hDown;
+        bool vDown = PlayerInput.vDown;
+        bool hUp = PlayerInput.hUp;
+        bool vUp = PlayerInput.vUp;
+
+        if (hDown || vUp)
+            isHorizontalMove = true;
+        else if (vDown || hUp)
+            isHorizontalMove = false;
+    }
+
     void MoveFunction2()
     {
-        if (!isMoving)
-        {
-            input.x = Input.GetAxisRaw("Horizontal");
-            input.y = Input.GetAxisRaw("Vertical");
 
+
+        if (!isMoving && isHorizontalMove)
+        {
+            input.x = PlayerInput.hRaw;
+            //input.y = Input.GetAxisRaw("Vertical");
             if (input != Vector2.zero)
             {
                 var targetPos = transform.position;
                 var tmp = targetPos;
                 targetPos.x += input.x;
-                targetPos.y += input.y;
-
-                if(IsWalkable(targetPos))
+                //targetPos.y += input.y;
+                if (IsWalkable(targetPos))
                 {
                     coroutine = Move(targetPos, tmp);
                     StartCoroutine(coroutine);
                 }
-                    
+            }
+        }
+        if (!isMoving && !isHorizontalMove)
+        {
+            input.y = PlayerInput.vRaw;
+
+            if (input != Vector2.zero)
+            {
+                var targetPos = transform.position;
+                var tmp = targetPos;
+                targetPos.y += input.y;
+                if (IsWalkable(targetPos))
+                {
+                    coroutine = Move(targetPos, tmp);
+                    StartCoroutine(coroutine);
+                }
             }
 
         }

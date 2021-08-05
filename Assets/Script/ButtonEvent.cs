@@ -6,11 +6,10 @@ using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class ButtonEvent : MonoBehaviour, IPointerClickHandler
+public class ButtonEvent : MonoBehaviour,IPointerClickHandler
 {
     public Object hero;
     public SceneAsset Scene;
-
     public enum ButtonType
     {
         GameStart,
@@ -18,13 +17,9 @@ public class ButtonEvent : MonoBehaviour, IPointerClickHandler
     }
 
     public ButtonType buttonType;
-
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnPointerClick(PointerEventData pointerEventData)
     {
-        if(buttonType == ButtonType.GameStart)
-        {
-            SceneManager.LoadScene(Scene.name);
-            Instantiate(hero);
-        }
+        SceneManager.LoadScene(Scene.name);
+        Instantiate(hero);
     }
 }
