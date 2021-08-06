@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerInput.MenuFunction += () => Debug.Log(selectedItem);
+        PlayerInput.MenuFunction += MenuFunction;
     }
 
     // Update is called once per frame
@@ -52,7 +52,16 @@ public class UIManager : MonoBehaviour
 
     void MenuFunction()
     {
-        
+        if(selectedItem == 6)
+        {
+            OpenMap();
+        }
+    }
+
+    void OpenMap()
+    {
+        Instantiate(Resources.Load("Map"));
+        this.gameObject.SetActive(false);
     }
 
 }

@@ -30,6 +30,7 @@ public class PlayerInput : MonoBehaviour
     public bool DownArrow { get; set; }
     public bool UpArrow { get; set; }
     public bool EnterDown { get; set; }
+    public bool escapeDown { get; set; }
 
     public GameObject menu;
 
@@ -62,18 +63,18 @@ public class PlayerInput : MonoBehaviour
         DownArrow = Input.GetKeyDown(KeyCode.DownArrow);
         UpArrow = Input.GetKeyDown(KeyCode.UpArrow);
         EnterDown = Input.GetKeyDown(KeyCode.Return);
-
+        escapeDown = Input.GetKeyDown(KeyCode.Escape);
 
         if (actionDown && SceneManager.GetActiveScene().buildIndex != 0)
         {
             menu.SetActive(!menu.activeSelf);
+            menuactive = true;
         }
 
         if(EnterDown && menuactive)
         {
             MenuFunction.Invoke();
         }
-        menuactive = menu.activeSelf;
     }
 
 }
