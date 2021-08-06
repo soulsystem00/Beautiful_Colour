@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
@@ -28,8 +29,11 @@ public class PlayerInput : MonoBehaviour
 
     public bool DownArrow { get; set; }
     public bool UpArrow { get; set; }
+    public bool EnterDown { get; set; }
 
     public GameObject menu;
+
+    public UnityAction MenuFunction;
 
     private void Awake()
     {
@@ -57,10 +61,17 @@ public class PlayerInput : MonoBehaviour
 
         DownArrow = Input.GetKeyDown(KeyCode.DownArrow);
         UpArrow = Input.GetKeyDown(KeyCode.UpArrow);
+        EnterDown = Input.GetKeyDown(KeyCode.Return);
+
 
         if (actionDown && SceneManager.GetActiveScene().buildIndex != 0)
         {
             menu.SetActive(!menu.activeSelf);
+        }
+
+        if(EnterDown && menuactive)
+        {
+            MenuFunction.Invoke();
         }
         menuactive = menu.activeSelf;
     }

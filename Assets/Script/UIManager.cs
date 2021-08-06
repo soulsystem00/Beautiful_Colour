@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -11,7 +12,6 @@ public class UIManager : MonoBehaviour
 {
     public PlayerInput PlayerInput;
     List<Text> menuItems;
-
     public int selectedItem = 0;
 
     private void Awake()
@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        PlayerInput.MenuFunction += () => Debug.Log(selectedItem);
     }
 
     // Update is called once per frame
@@ -34,6 +34,7 @@ public class UIManager : MonoBehaviour
             selectedItem++;
         else if (PlayerInput.UpArrow)
             selectedItem--;
+
 
         selectedItem = Mathf.Clamp(selectedItem, 0, menuItems.Count - 1);
 
@@ -49,12 +50,9 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    private void OnEnable()
+    void MenuFunction()
     {
-        //GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>().enabled = false;
+        
     }
-    private void OnDisable()
-    {
-        //GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerInput>().enabled = true;
-    }
+
 }
