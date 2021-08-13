@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
     public GameObject Player;
     public PlayerInput playerInput;
     public TalkManager talkManager;
+
+    public GameObject additional;
     Colour colour;
     public int talkindex;
     private void Awake()
@@ -66,9 +68,12 @@ public class GameManager : MonoBehaviour
         if(talkData == null)
         {
             talkindex = 0;
-            TextUI.SetActive(false);
+            //TextUI.SetActive(false);
             playerInput.state = PlayerInput.State.Move;
-            colour.teleport(Player);
+            additional.SetActive(true);
+            additional.GetComponent<AdditionalMenu>().colour = colour;
+            additional.GetComponent<AdditionalMenu>().player = Player;
+            //colour.teleport(Player);
             return;
         }
 

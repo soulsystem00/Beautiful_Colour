@@ -19,6 +19,7 @@ public class PlayerInput : MonoBehaviour
         Move,
         Menu,
         Talk,
+        Additional,
 
     }
     public bool hDown { get; set; }
@@ -40,7 +41,8 @@ public class PlayerInput : MonoBehaviour
     public GameObject menu;
     public GameObject TalkUI;
     public UnityAction MenuFunction;
-
+    public UnityAction tele;
+    public GameObject Addtion;
     public State state;
     private void Awake()
     {
@@ -78,18 +80,24 @@ public class PlayerInput : MonoBehaviour
             menu.SetActive(!menu.activeSelf);
         }
 
-        if(EnterDown && state == State.Menu)
+        if(EnterDown)
         {
-            MenuFunction.Invoke();
+            if(state == State.Menu)
+                MenuFunction.Invoke();
+            else if(state == State.Additional)
+                tele.Invoke();
         }
+
     }
 
     void setState()
     {
         if (menu.activeSelf)
             state = State.Menu;
-        else if (TalkUI.activeSelf)
+        else if (TalkUI.activeSelf && !Addtion.activeSelf)
             state = State.Talk;
+        else if (TalkUI.activeSelf && Addtion.activeSelf)
+            state = State.Additional;
         else
             state = State.Move;
     }
