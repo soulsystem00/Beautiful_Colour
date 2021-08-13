@@ -4,15 +4,17 @@ using System.Security.Policy;
 using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.iOS;
+using UnityEngine.UI;
 
 public class PlayerActions : MonoBehaviour
 {
     public float moveSpeed;
     public LayerMask solidObjectsLayer;
+    public LayerMask colour;
     IEnumerator coroutine;
     float h;
     float v;
-    
+
     bool isHorizontalMove;
 
     float CurX;
@@ -28,8 +30,16 @@ public class PlayerActions : MonoBehaviour
     Rigidbody2D rigid;
     BoxCollider2D collider2D;
     PlayerInput PlayerInput;
+
+
+    Vector3 dirVec;
+    GameObject scanObject;
+
+    public GameManager manager;
     private void Awake()
     {
+        manager = FindObjectOfType<GameManager>();
+        manager.Player = gameObject;
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -44,14 +54,32 @@ public class PlayerActions : MonoBehaviour
     void Update()
     {
         //MoveFunction1();
-        if(!PlayerInput.menuactive)
+        if (PlayerInput.state == PlayerInput.State.Move)
         {
             CheckInput();
             MoveFunction2();
         }
 
-    }
+        if (Input.GetKeyDown(KeyCode.Z) && scanObject != null && (PlayerInput.state == PlayerInput.State.Move || PlayerInput.state == PlayerInput.State.Talk))
+        {
+            //Debug.Log("this is " + scanObject.name);
+            manager.Action(scanObject);
+        }
 
+    }
+    private void FixedUpdate()
+    {
+        Debug.DrawRay(rigid.position, dirVec * 0.7f, new Color(0, 1, 0));
+
+        RaycastHit2D rayHit = Physics2D.Raycast(rigid.position, dirVec, 0.7f, LayerMask.GetMask("Colour"));
+
+        if (rayHit.collider != null)
+        {
+            scanObject = rayHit.collider.gameObject;
+        }
+        else
+            scanObject = null;
+    }
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Gate"))
@@ -80,6 +108,15 @@ public class PlayerActions : MonoBehaviour
             isHorizontalMove = true;
         else if (vDown || hUp)
             isHorizontalMove = false;
+
+        if (vDown && PlayerInput.vRaw == 1)
+            dirVec = Vector3.up;
+        else if (vDown && PlayerInput.vRaw == -1)
+            dirVec = Vector3.down;
+        else if (hDown && PlayerInput.hRaw == -1)
+            dirVec = Vector3.left;
+        else if (hDown && PlayerInput.hRaw == 1)
+            dirVec = Vector3.right;
     }
 
     void MoveFunction2()
@@ -137,7 +174,7 @@ public class PlayerActions : MonoBehaviour
 
     private bool IsWalkable(Vector3 targetPos)
     {
-        if(Physics2D.OverlapCircle(targetPos, 0.3f, solidObjectsLayer) != null)
+        if(Physics2D.OverlapCircle(targetPos, 0.3f, solidObjectsLayer) != null || Physics2D.OverlapCircle(targetPos, 0.3f, colour) != null)
         {
             return false;
         }

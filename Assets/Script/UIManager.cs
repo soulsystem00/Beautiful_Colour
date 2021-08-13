@@ -37,7 +37,6 @@ public class UIManager : MonoBehaviour
 
 
         selectedItem = Mathf.Clamp(selectedItem, 0, menuItems.Count - 1);
-
         //if(prevSelection != selectedItem)
             ChangeColor();
     }

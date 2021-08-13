@@ -13,9 +13,14 @@ public class PlayerInput : MonoBehaviour
     {
         Horizontal,
         Vertical,
+    }
+    public enum State
+    {
+        Move,
+        Menu,
+        Talk,
 
     }
-
     public bool hDown { get; set; }
     public bool vDown { get; set; }
     public bool hUp { get; set; }
@@ -23,7 +28,7 @@ public class PlayerInput : MonoBehaviour
 
     public float hRaw { get; set; }
     public float vRaw { get; set; }
-    public bool actionDown { get; set; }
+    public bool Key_Menu { get; set; }
 
     public bool menuactive { get; set; }
 
@@ -33,12 +38,13 @@ public class PlayerInput : MonoBehaviour
     public bool escapeDown { get; set; }
 
     public GameObject menu;
-
+    public GameObject TalkUI;
     public UnityAction MenuFunction;
 
+    public State state;
     private void Awake()
     {
-
+        state = State.Move;
     }
 
     // Start is called before the first frame update
@@ -50,6 +56,8 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        setState();
+
         hDown = Input.GetButtonDown("Horizontal");
         vDown = Input.GetButtonDown("Vertical");
         hUp = Input.GetButtonUp("Horizontal");
@@ -58,23 +66,32 @@ public class PlayerInput : MonoBehaviour
         hRaw = Input.GetAxisRaw("Horizontal");
         vRaw = Input.GetAxisRaw("Vertical");
 
-        actionDown = Input.GetKeyDown(KeyCode.Tab);
+        Key_Menu = Input.GetKeyDown(KeyCode.Tab);
 
         DownArrow = Input.GetKeyDown(KeyCode.DownArrow);
         UpArrow = Input.GetKeyDown(KeyCode.UpArrow);
         EnterDown = Input.GetKeyDown(KeyCode.Return);
         escapeDown = Input.GetKeyDown(KeyCode.Escape);
 
-        if (actionDown && SceneManager.GetActiveScene().buildIndex != 0)
+        if (Key_Menu && SceneManager.GetActiveScene().buildIndex != 0)
         {
             menu.SetActive(!menu.activeSelf);
-            menuactive = true;
         }
 
-        if(EnterDown && menuactive)
+        if(EnterDown && state == State.Menu)
         {
             MenuFunction.Invoke();
         }
+    }
+
+    void setState()
+    {
+        if (menu.activeSelf)
+            state = State.Menu;
+        else if (TalkUI.activeSelf)
+            state = State.Talk;
+        else
+            state = State.Move;
     }
 
 }

@@ -102,6 +102,9 @@ MonoBehaviour:
   solidObjectsLayer:
     serializedVersion: 2
     m_Bits: 256
+  colour:
+    serializedVersion: 2
+    m_Bits: 1024
 --- !u!1839735485 &2950652432136192253
 Tilemap:
   m_ObjectHideFlags: 0
