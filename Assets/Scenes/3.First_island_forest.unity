@@ -6207,7 +6207,9 @@ GameObject:
   - component: {fileID: 1192295262}
   - component: {fileID: 1192295264}
   - component: {fileID: 1192295263}
-  m_Layer: 0
+  - component: {fileID: 1192295266}
+  - component: {fileID: 1192295265}
+  m_Layer: 10
   m_Name: hidden
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6610,6 +6612,40 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &1192295265
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192295261}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8edf5bb8a8450bb439f97ed08d7f39b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  id: 1000
+  isNpc: 0
+  x: 0
+  y: 0
+  tc: {fileID: 1192295266}
+  tile: {fileID: 1192295264}
+--- !u!19719996 &1192295266
+TilemapCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1192295261}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_MaximumTileChangeCount: 1000
+  m_ExtrusionFactor: 0.00001
 --- !u!1 &1300240532
 GameObject:
   m_ObjectHideFlags: 0

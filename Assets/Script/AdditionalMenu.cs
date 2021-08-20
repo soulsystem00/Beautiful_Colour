@@ -45,9 +45,13 @@ public class AdditionalMenu : MonoBehaviour
 
     void Menufunction()
     {
-        if(selectedItem == 0)
+        if(selectedItem == 0 && colour.isNpc)
         {
             colour.teleport(player);
+        }
+        else if(selectedItem == 0 && !colour.isNpc)
+        {
+            colour.function();
         }
         gameObject.SetActive(false);
         menu.SetActive(false);
