@@ -1260,7 +1260,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uBB34\uC57C\uD638 \uBD07"
+  m_Text: "\uD589\uC6B4\uC758 \uC0AC\uB098\uC774"
 --- !u!222 &631631163
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1796,7 +1796,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8edf5bb8a8450bb439f97ed08d7f39b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  id: 2000
+  id: 3000
   isNpc: 1
   Character: 5
   x: 0
