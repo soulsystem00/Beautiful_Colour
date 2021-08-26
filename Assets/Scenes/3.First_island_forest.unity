@@ -6626,6 +6626,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   id: 1000
   isNpc: 0
+  Character: 1
   x: 0
   y: 0
   tc: {fileID: 1192295266}

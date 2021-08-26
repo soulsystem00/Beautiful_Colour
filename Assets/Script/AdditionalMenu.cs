@@ -45,11 +45,11 @@ public class AdditionalMenu : MonoBehaviour
 
     void Menufunction()
     {
-        if(selectedItem == 0 && colour.isNpc)
+        if(selectedItem == 0 && colour.Character == Colour.character.화이)
         {
             colour.teleport(player);
         }
-        else if(selectedItem == 0 && !colour.isNpc)
+        else if(selectedItem == 0 && colour.Character == Colour.character.이매)
         {
             colour.function();
         }

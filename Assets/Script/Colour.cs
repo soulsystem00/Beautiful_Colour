@@ -8,6 +8,18 @@ public class Colour : MonoBehaviour
     public int id;
     public bool isNpc;
 
+    public enum character
+    {
+        화이,
+        이매,
+        척혁,
+        화주,
+        심청,
+        NPC,
+    }
+
+
+    public character Character;
     public int x, y;
 
     public TilemapCollider2D tc;

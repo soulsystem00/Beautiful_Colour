@@ -57,12 +57,12 @@ public class GameManager : MonoBehaviour
         TextUI.SetActive(true);
         scanObject = scanObj;
         colour = scanObject.GetComponent<Colour>();
-        Talk(colour.id, colour.isNpc);
+        Talk(colour.id, colour.isNpc, colour);
         
 
     }
 
-    void Talk(int id, bool isNpc)
+    void Talk(int id, bool isNpc,Colour colour)
     {
         string talkData = talkManager.GetTalk(id, talkindex);
         if(talkData == null)
@@ -70,9 +70,17 @@ public class GameManager : MonoBehaviour
             talkindex = 0;
             //TextUI.SetActive(false);
             playerInput.state = PlayerInput.State.Move;
-            additional.SetActive(true);
-            additional.GetComponent<AdditionalMenu>().colour = colour;
-            additional.GetComponent<AdditionalMenu>().player = Player;
+
+            if(colour.Character != Colour.character.NPC)
+            {
+                additional.SetActive(true);
+                additional.GetComponent<AdditionalMenu>().colour = colour;
+                additional.GetComponent<AdditionalMenu>().player = Player;
+            }
+            else
+            {
+                TextUI.SetActive(false);
+            }
             //colour.teleport(Player);
             return;
         }
