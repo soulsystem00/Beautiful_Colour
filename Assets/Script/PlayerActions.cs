@@ -33,7 +33,7 @@ public class PlayerActions : MonoBehaviour
 
 
     Vector3 dirVec;
-    GameObject scanObject;
+    public GameObject scanObject;
 
     public GameManager manager;
 
@@ -61,7 +61,7 @@ public class PlayerActions : MonoBehaviour
         //MoveFunction1();
         if (PlayerInput.state == PlayerInput.State.Move)
         {
-            //CheckInput();
+            CheckInput();
             MoveFunction2();
         }
 
@@ -74,9 +74,9 @@ public class PlayerActions : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Debug.DrawRay(rigid.position, dirVec * 0.7f, new Color(0, 1, 0));
+        Debug.DrawRay(rigid.position, dirVec * 1f, new Color(1, 0, 0));
 
-        RaycastHit2D rayHit = Physics2D.Raycast(rigid.position, dirVec, 0.7f, LayerMask.GetMask("Colour"));
+        RaycastHit2D rayHit = Physics2D.Raycast(rigid.position, dirVec, 1f, LayerMask.GetMask("Colour"));
 
         if (rayHit.collider != null)
         {
@@ -102,27 +102,27 @@ public class PlayerActions : MonoBehaviour
         rigid.velocity = new Vector2(h * moveSpeed, v * moveSpeed);
     }
 
-    //void CheckInput()
-    //{
-    //    bool hDown = PlayerInput.hDown;
-    //    bool vDown = PlayerInput.vDown;
-    //    bool hUp = PlayerInput.hUp;
-    //    bool vUp = PlayerInput.vUp;
+    void CheckInput()
+    {
+        bool hDown = PlayerInput.hDown;
+        bool vDown = PlayerInput.vDown;
+        bool hUp = PlayerInput.hUp;
+        bool vUp = PlayerInput.vUp;
 
-    //    if (hDown || vUp)
-    //        isHorizontalMove = true;
-    //    else if (vDown || hUp)
-    //        isHorizontalMove = false;
+        if (hDown || vUp)
+            isHorizontalMove = true;
+        else if (vDown || hUp)
+            isHorizontalMove = false;
 
-    //    if (vDown && PlayerInput.vRaw == 1)
-    //        dirVec = Vector3.up;
-    //    else if (vDown && PlayerInput.vRaw == -1)
-    //        dirVec = Vector3.down;
-    //    else if (hDown && PlayerInput.hRaw == -1)
-    //        dirVec = Vector3.left;
-    //    else if (hDown && PlayerInput.hRaw == 1)
-    //        dirVec = Vector3.right;
-    //}
+        if (vDown && PlayerInput.vRaw == 1)
+            dirVec = Vector3.up;
+        else if (vDown && PlayerInput.vRaw == -1)
+            dirVec = Vector3.down;
+        else if (hDown && PlayerInput.hRaw == -1)
+            dirVec = Vector3.left;
+        else if (hDown && PlayerInput.hRaw == 1)
+            dirVec = Vector3.right;
+    }
 
     void MoveFunction2()
     {
