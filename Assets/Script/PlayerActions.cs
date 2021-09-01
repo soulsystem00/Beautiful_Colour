@@ -59,9 +59,9 @@ public class PlayerActions : MonoBehaviour
     void Update()
     {
         //MoveFunction1();
-        if (PlayerInput.state == PlayerInput.State.Move && !isMoving)
+        if (PlayerInput.state == PlayerInput.State.Move)
         {
-            CheckInput();
+            //CheckInput();
             MoveFunction2();
         }
 
@@ -102,55 +102,42 @@ public class PlayerActions : MonoBehaviour
         rigid.velocity = new Vector2(h * moveSpeed, v * moveSpeed);
     }
 
-    void CheckInput()
-    {
-        bool hDown = PlayerInput.hDown;
-        bool vDown = PlayerInput.vDown;
-        bool hUp = PlayerInput.hUp;
-        bool vUp = PlayerInput.vUp;
+    //void CheckInput()
+    //{
+    //    bool hDown = PlayerInput.hDown;
+    //    bool vDown = PlayerInput.vDown;
+    //    bool hUp = PlayerInput.hUp;
+    //    bool vUp = PlayerInput.vUp;
 
-        if (hDown || vUp)
-            isHorizontalMove = true;
-        else if (vDown || hUp)
-            isHorizontalMove = false;
+    //    if (hDown || vUp)
+    //        isHorizontalMove = true;
+    //    else if (vDown || hUp)
+    //        isHorizontalMove = false;
 
-        if (vDown && PlayerInput.vRaw == 1)
-            dirVec = Vector3.up;
-        else if (vDown && PlayerInput.vRaw == -1)
-            dirVec = Vector3.down;
-        else if (hDown && PlayerInput.hRaw == -1)
-            dirVec = Vector3.left;
-        else if (hDown && PlayerInput.hRaw == 1)
-            dirVec = Vector3.right;
-    }
+    //    if (vDown && PlayerInput.vRaw == 1)
+    //        dirVec = Vector3.up;
+    //    else if (vDown && PlayerInput.vRaw == -1)
+    //        dirVec = Vector3.down;
+    //    else if (hDown && PlayerInput.hRaw == -1)
+    //        dirVec = Vector3.left;
+    //    else if (hDown && PlayerInput.hRaw == 1)
+    //        dirVec = Vector3.right;
+    //}
 
     void MoveFunction2()
     {
-        if (!isMoving && isHorizontalMove)
+        if (!isMoving)
         {
             input.x = PlayerInput.hRaw;
-            //input.y = Input.GetAxisRaw("Vertical");
+            input.y = PlayerInput.vRaw;
+
+            if (input.x != 0) input.y = 0;
+
             if (input != Vector2.zero)
             {
                 var targetPos = transform.position;
                 var tmp = targetPos;
                 targetPos.x += input.x;
-                //targetPos.y += input.y;
-                if (IsWalkable(targetPos))
-                {
-                    coroutine = Move(targetPos, tmp);
-                    StartCoroutine(coroutine);
-                }
-            }
-        }
-        if (!isMoving && !isHorizontalMove)
-        {
-            input.y = PlayerInput.vRaw;
-
-            if (input != Vector2.zero)
-            {
-                var targetPos = transform.position;
-                var tmp = targetPos;
                 targetPos.y += input.y;
                 if (IsWalkable(targetPos))
                 {
@@ -158,8 +145,24 @@ public class PlayerActions : MonoBehaviour
                     StartCoroutine(coroutine);
                 }
             }
-
         }
+        //if (!isMoving && !isHorizontalMove)
+        //{
+        //    input.y = PlayerInput.vRaw;
+
+        //    if (input != Vector2.zero)
+        //    {
+        //        var targetPos = transform.position;
+        //        var tmp = targetPos;
+        //        targetPos.y += input.y;
+        //        if (IsWalkable(targetPos))
+        //        {
+        //            coroutine = Move(targetPos, tmp);
+        //            StartCoroutine(coroutine);
+        //        }
+        //    }
+
+        //}
 
         
     }
@@ -174,6 +177,8 @@ public class PlayerActions : MonoBehaviour
             transform.position = Vector3.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
             yield return null;
         }
+
+        transform.position = targetPos;
         isMoving = false;
         CheckForEncounters();
     }
