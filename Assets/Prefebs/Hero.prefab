@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 2950652432136192248}
   - component: {fileID: 2950652432136192249}
-  - component: {fileID: 2950652432136192251}
   - component: {fileID: 2950652432136192253}
   - component: {fileID: 2950652432136192252}
   - component: {fileID: 2950652432136192250}
+  - component: {fileID: 2950652432136192251}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Player
@@ -86,25 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &2950652432136192251
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2950652432136192246}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7de4ed4e8f43b77458451e4d5c564f04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  moveSpeed: 10
-  solidObjectsLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  colour:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!1839735485 &2950652432136192253
 Tilemap:
   m_ObjectHideFlags: 0
@@ -153,7 +134,7 @@ BoxCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -190,3 +171,26 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &2950652432136192251
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950652432136192246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7de4ed4e8f43b77458451e4d5c564f04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeed: 10
+  solidObjectsLayer:
+    serializedVersion: 2
+    m_Bits: 256
+  colour:
+    serializedVersion: 2
+    m_Bits: 1024
+  manager: {fileID: 0}
+  grassLayer:
+    serializedVersion: 2
+    m_Bits: 2048

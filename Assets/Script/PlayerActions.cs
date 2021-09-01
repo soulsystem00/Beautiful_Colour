@@ -36,6 +36,11 @@ public class PlayerActions : MonoBehaviour
     GameObject scanObject;
 
     public GameManager manager;
+
+
+    public LayerMask grassLayer;
+
+
     private void Awake()
     {
         manager = FindObjectOfType<GameManager>();
@@ -54,7 +59,7 @@ public class PlayerActions : MonoBehaviour
     void Update()
     {
         //MoveFunction1();
-        if (PlayerInput.state == PlayerInput.State.Move)
+        if (PlayerInput.state == PlayerInput.State.Move && !isMoving)
         {
             CheckInput();
             MoveFunction2();
@@ -121,8 +126,6 @@ public class PlayerActions : MonoBehaviour
 
     void MoveFunction2()
     {
-
-
         if (!isMoving && isHorizontalMove)
         {
             input.x = PlayerInput.hRaw;
@@ -157,6 +160,8 @@ public class PlayerActions : MonoBehaviour
             }
 
         }
+
+        
     }
 
     IEnumerator Move(Vector3 targetPos, Vector3 tmp)
@@ -170,6 +175,7 @@ public class PlayerActions : MonoBehaviour
             yield return null;
         }
         isMoving = false;
+        CheckForEncounters();
     }
 
     private bool IsWalkable(Vector3 targetPos)
@@ -180,5 +186,16 @@ public class PlayerActions : MonoBehaviour
         }
 
         return true;
+    }
+
+    private void CheckForEncounters()
+    {
+        if (Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
+        {
+            if(Random.Range(1, 101) <= 10)
+            {
+                Debug.Log("Encounterd pokemon");
+            }
+        }
     }
 }
