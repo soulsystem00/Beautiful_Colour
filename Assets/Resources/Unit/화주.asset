@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e5cdfb11264c444da85f80287c8b523, type: 3}
+  m_Name: "\uD654\uC8FC"
+  m_EditorClassIdentifier: 
+  name: LEF
+  description: 
+  frontSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
+  backSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
+  portraitSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
+  dialogSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
+  type1: 1
+  physicsAttack: 6
+  magicalAttack: 22
+  physicsDefence: 13
+  magicalDefence: 19
+  speed: 17
+  evasion: 6
+  maxHp: 100
+  energy: 100
+  physicsAttack_Inc: 1
+  magicalAttack_Inc: 6
+  physicsDefence_Inc: 2
+  magicalDefence_Inc: 4
+  speed_Inc: 2
+  evasion_Inc: 2
+  maxHp_Inc: 20
+  energy_Inc: 50
+  learnableSkills:
+  - skillBase: {fileID: 11400000, guid: fa30c480d16fa1d4585a0a9edeb108ba, type: 2}
+    level: 1
+  - skillBase: {fileID: 11400000, guid: 32cf9c606a50b2644b2bfef04b6ecd0d, type: 2}
+    level: 2
+  - skillBase: {fileID: 11400000, guid: a4ff8a21a8863b94286bb544ed7e6edd, type: 2}
+    level: 3

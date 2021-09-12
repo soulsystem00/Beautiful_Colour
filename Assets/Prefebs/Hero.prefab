@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2950652432136192252}
   - component: {fileID: 2950652432136192251}
   - component: {fileID: 3499160520677324472}
+  - component: {fileID: -6628363667703194295}
   m_Layer: 0
   m_Name: Hero
   m_TagString: Player
@@ -174,6 +175,8 @@ MonoBehaviour:
   grassLayer:
     serializedVersion: 2
     m_Bits: 2048
+  camera: {fileID: 0}
+  battlesystem: {fileID: 0}
 --- !u!50 &3499160520677324472
 Rigidbody2D:
   serializedVersion: 4
@@ -195,3 +198,20 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
+--- !u!114 &-6628363667703194295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2950652432136192246}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 394ca2afd1686fe4db7610b96e8e394d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  units:
+  - _base: {fileID: 11400000, guid: c363b2c0c4ce4f447af595ebaa22ccc9, type: 2}
+    level: 10
+  - _base: {fileID: 11400000, guid: 630c9638c34f3dd4ba0febf59f87e066, type: 2}
+    level: 10

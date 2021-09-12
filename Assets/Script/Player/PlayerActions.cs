@@ -40,7 +40,8 @@ public class PlayerActions : MonoBehaviour
 
     public LayerMask grassLayer;
 
-
+    public GameObject camera;
+    public GameObject battlesystem;
     private void Awake()
     {
         manager = FindObjectOfType<GameManager>();
@@ -199,6 +200,8 @@ public class PlayerActions : MonoBehaviour
         {
             if(Random.Range(1, 101) <= 10)
             {
+                camera.SetActive(false);
+                battlesystem.SetActive(true);
                 Debug.Log("Encounterd pokemon");
             }
         }

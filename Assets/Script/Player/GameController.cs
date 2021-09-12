@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public class PlayerInput : MonoBehaviour
+public class GameController : MonoBehaviour
 {
     enum Input_type
     {
@@ -58,23 +58,6 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        setState();
-
-        hDown = Input.GetButtonDown("Horizontal");
-        vDown = Input.GetButtonDown("Vertical");
-        hUp = Input.GetButtonUp("Horizontal");
-        vUp = Input.GetButtonUp("Vertical");
-
-        hRaw = Input.GetAxisRaw("Horizontal");
-        vRaw = Input.GetAxisRaw("Vertical");
-
-        Key_Menu = Input.GetKeyDown(KeyCode.Tab);
-
-        DownArrow = Input.GetKeyDown(KeyCode.DownArrow);
-        UpArrow = Input.GetKeyDown(KeyCode.UpArrow);
-        EnterDown = Input.GetKeyDown(KeyCode.Return);
-        escapeDown = Input.GetKeyDown(KeyCode.Escape);
-
         if (Key_Menu && SceneManager.GetActiveScene().buildIndex != 0)
         {
             menu.SetActive(!menu.activeSelf);

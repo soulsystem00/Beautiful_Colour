@@ -16,6 +16,10 @@ public class SenceLoader : MonoBehaviour
         {
             SceneManager.LoadScene(scene.name);
             collision.transform.position = char_position;
+
+            //collision.GetComponent<PlayerActions>().camera = GameObject.Find("Main Camera");
+            //collision.GetComponent<PlayerActions>().battlesystem = GameObject.Find("battlesystem");
+
         }
         //if (string.Compare(collision.name, "Hero(Clone)") == 0)
         //{
