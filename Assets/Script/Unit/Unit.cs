@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.InteropServices;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
@@ -15,10 +13,12 @@ public class Unit
     public List<Skill> Skills { get; set; }
 
     public int HP { get; set; }
+    public int energy { get; set; }
 
     public void init()
     {
         HP = MaxHp;
+        energy = MaxEnergy;
 
         Skills = new List<Skill>();
         foreach(var skill in Base.LearnableSkills)
@@ -62,10 +62,16 @@ public class Unit
     {
         get { return Base.MaxHp + (Level * Base.MaxHp_Inc); }
     }
-    public int Energy
+    public int MaxEnergy
     {
-        get { return Base.Energy + (Level * Base.Energy_Inc); }
+        get { return Base.MaxEnergy + (Level * Base.MaxEnergy_Inc); }
     }
+    //public int Energy
+    //{
+    //    get { return Base.Energy + (Level * Base.MaxEnergy_Inc); }
+    //}
+
+
     public DamageDetails TakeDamage(Skill skill, Unit attacker)
     {
         var damagedatails = new DamageDetails()

@@ -10,8 +10,8 @@ public class tmptmp : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        FindObjectOfType<GameManager>().Player.GetComponent<PlayerActions>().camera = Camera;
-        FindObjectOfType<GameManager>().Player.GetComponent<PlayerActions>().battlesystem = battlesystem;
+        //FindObjectOfType<GameManager>().Player.GetComponent<PlayerActions>().camera = Camera;
+        //FindObjectOfType<GameManager>().Player.GetComponent<PlayerActions>().battlesystem = battlesystem;
     }
 
     // Update is called once per frame

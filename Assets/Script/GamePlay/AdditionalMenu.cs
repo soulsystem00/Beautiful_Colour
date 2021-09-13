@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class AdditionalMenu : MonoBehaviour
 {
-    public PlayerInput playerinput;
+    //public PlayerInput playerinput;
     public GameObject menu;
     public Colour colour;
     public GameObject player;
@@ -16,7 +16,7 @@ public class AdditionalMenu : MonoBehaviour
     void Start()
     {
         menuItems = GetComponentsInChildren<Text>().ToList();
-        playerinput.tele += Menufunction;
+        //playerinput.tele += Menufunction;
     }
 
     // Update is called once per frame
@@ -24,10 +24,10 @@ public class AdditionalMenu : MonoBehaviour
     {
         int prevSelection = selectedItem;
 
-        if (playerinput.DownArrow)
-            selectedItem++;
-        else if (playerinput.UpArrow)
-            selectedItem--;
+        //if (playerinput.DownArrow)
+        //    selectedItem++;
+        //else if (playerinput.UpArrow)
+        //    selectedItem--;
 
 
         selectedItem = Mathf.Clamp(selectedItem, 0, menuItems.Count - 1);
@@ -56,13 +56,13 @@ public class AdditionalMenu : MonoBehaviour
         gameObject.SetActive(false);
         menu.SetActive(false);
     }
-    private void OnEnable()
-    {
-        playerinput.state = PlayerInput.State.Additional;
-    }
+    //private void OnEnable()
+    //{
+    //    playerinput.state = PlayerInput.State.Additional;
+    //}
 
-    private void OnDisable()
-    {
-        playerinput.state = PlayerInput.State.Move;
-    }
+    //private void OnDisable()
+    //{
+    //    playerinput.state = PlayerInput.State.Move;
+    //}
 }

@@ -29,6 +29,7 @@ public class UnitBase : ScriptableObject
     [SerializeField] int evasion;
     [SerializeField] int maxHp;
     [SerializeField] int energy;
+    [SerializeField] int maxEnergy;
 
     [Header("레벨에 따른 증가량")]
     [SerializeField] int physicsAttack_Inc;
@@ -38,7 +39,7 @@ public class UnitBase : ScriptableObject
     [SerializeField] int speed_Inc;
     [SerializeField] int evasion_Inc;
     [SerializeField] int maxHp_Inc;
-    [SerializeField] int energy_Inc;
+    [SerializeField] int maxEnergy_Inc;
 
     [SerializeField] List<LearnableSkill> learnableSkills;
     public string Name
@@ -59,9 +60,9 @@ public class UnitBase : ScriptableObject
     public int MagicalDefence { get => magicalDefence; }
     public int Speed { get => speed; }
     public int Evasion { get => evasion; }
+    public int Energy { get => energy; }
+    public int MaxEnergy { get => maxEnergy; }
 
-
-    public int Energy { get => energy; set => energy = value; }
     public int PhysicsAttack_Inc { get => physicsAttack_Inc; }
     public int MagicalAttack_Inc { get => magicalAttack_Inc; }
     public int PhysicsDefence_Inc { get => physicsDefence_Inc; }
@@ -69,7 +70,7 @@ public class UnitBase : ScriptableObject
     public int Speed_Inc { get => speed_Inc; }
     public int Evasion_Inc { get => evasion_Inc; }
     public int MaxHp_Inc { get => maxHp_Inc; }
-    public int Energy_Inc { get => energy_Inc; }
+    public int MaxEnergy_Inc { get => maxEnergy_Inc; }
     public List<LearnableSkill> LearnableSkills { get => learnableSkills; }
     
 }

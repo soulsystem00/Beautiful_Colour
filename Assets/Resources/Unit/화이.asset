@@ -27,6 +27,7 @@ MonoBehaviour:
   evasion: 6
   maxHp: 200
   energy: 60
+  maxEnergy: 60
   physicsAttack_Inc: 3
   magicalAttack_Inc: 2
   physicsDefence_Inc: 6
@@ -34,7 +35,7 @@ MonoBehaviour:
   speed_Inc: 3
   evasion_Inc: 3
   maxHp_Inc: 40
-  energy_Inc: 10
+  maxEnergy_Inc: 10
   learnableSkills:
   - skillBase: {fileID: 11400000, guid: fa30c480d16fa1d4585a0a9edeb108ba, type: 2}
     level: 1

@@ -7,82 +7,59 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
+public enum GameState { FreeRome, Battle }
+
 public class GameController : MonoBehaviour
 {
-    enum Input_type
-    {
-        Horizontal,
-        Vertical,
-    }
-    public enum State
-    {
-        Move,
-        Menu,
-        Talk,
-        Additional,
-
-    }
-    public bool hDown { get; set; }
-    public bool vDown { get; set; }
-    public bool hUp { get; set; }
-    public bool vUp { get; set; }
-
-    public float hRaw { get; set; }
-    public float vRaw { get; set; }
-    public bool Key_Menu { get; set; }
-
-    public bool menuactive { get; set; }
-
-    public bool DownArrow { get; set; }
-    public bool UpArrow { get; set; }
-    public bool EnterDown { get; set; }
-    public bool escapeDown { get; set; }
-
-    public GameObject menu;
-    public GameObject TalkUI;
-    public UnityAction MenuFunction;
-    public UnityAction tele;
-    public GameObject Addtion;
-    public State state;
+    [SerializeField] PlayerActions playerActions;
+    [SerializeField] BattleSystem battleSystem;
+    [SerializeField] Camera worldCamera;
+    public GameState state;
     private void Awake()
     {
-        state = State.Move;
+
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        playerActions.OnEncountered += StartBattle;
+        battleSystem.OnBattleOver += EndBattle;
     }
+
+    void StartBattle()
+    {
+        state = GameState.Battle;
+        battleSystem.gameObject.SetActive(true);
+        worldCamera.gameObject.SetActive(false);
+        battleSystem.StartBattle(playerActions.GetComponent<UnitParty>(), FindObjectOfType<MapArea>().GetComponent<MapArea>().GetWildUnit());
+    }
+
+    void EndBattle(bool won)
+    {
+        state = GameState.FreeRome;
+        battleSystem.gameObject.SetActive(false);
+        worldCamera.gameObject.SetActive(true);
+    }
+
 
     // Update is called once per frame
     void Update()
     {
-        if (Key_Menu && SceneManager.GetActiveScene().buildIndex != 0)
+        if(state == GameState.FreeRome)
         {
-            menu.SetActive(!menu.activeSelf);
+            playerActions.HandleUpdate();
         }
-
-        if(EnterDown)
+        else if(state == GameState.Battle)
         {
-            if(state == State.Menu)
-                MenuFunction.Invoke();
-            else if(state == State.Additional)
-                tele.Invoke();
+            battleSystem.HandleUpdate();
         }
 
     }
 
     void setState()
     {
-        if (menu.activeSelf)
-            state = State.Menu;
-        else if (TalkUI.activeSelf && !Addtion.activeSelf)
-            state = State.Talk;
-        else if (TalkUI.activeSelf && Addtion.activeSelf)
-            state = State.Additional;
-        else
-            state = State.Move;
+
     }
 
 }

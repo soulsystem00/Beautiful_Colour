@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Security.Policy;
 using UnityEditorInternal;
@@ -29,7 +30,7 @@ public class PlayerActions : MonoBehaviour
 
     Rigidbody2D rigid;
     BoxCollider2D collider2D;
-    PlayerInput PlayerInput;
+    //PlayerInput PlayerInput;
 
 
     Vector3 dirVec;
@@ -42,10 +43,12 @@ public class PlayerActions : MonoBehaviour
 
     public GameObject camera;
     public GameObject battlesystem;
+
+    public event Action OnEncountered; 
     private void Awake()
     {
-        manager = FindObjectOfType<GameManager>();
-        manager.Player = gameObject;
+        //manager = FindObjectOfType<GameManager>();
+        //manager.Player = gameObject;
         DontDestroyOnLoad(this.gameObject);
     }
 
@@ -53,24 +56,21 @@ public class PlayerActions : MonoBehaviour
     void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
-        PlayerInput = GameObject.Find("GameController").GetComponent<PlayerInput>();
+        //PlayerInput = GameObject.Find("GameController").GetComponent<PlayerInput>();
     }
 
     // Update is called once per frame
-    void Update()
+    public void HandleUpdate()
     {
         //MoveFunction1();
-        if (PlayerInput.state == PlayerInput.State.Move)
-        {
-            CheckInput();
+            //CheckInput();
             MoveFunction2();
-        }
 
-        if (Input.GetKeyDown(KeyCode.Z) && scanObject != null && (PlayerInput.state == PlayerInput.State.Move || PlayerInput.state == PlayerInput.State.Talk))
-        {
-            //Debug.Log("this is " + scanObject.name);
-            manager.Action(scanObject);
-        }
+        //if (Input.GetKeyDown(KeyCode.Z) && scanObject != null && (PlayerInput.state == PlayerInput.State.Move || PlayerInput.state == PlayerInput.State.Talk))
+        //{
+        //    //Debug.Log("this is " + scanObject.name);
+        //    manager.Action(scanObject);
+        //}
 
     }
     private void FixedUpdate()
@@ -103,36 +103,38 @@ public class PlayerActions : MonoBehaviour
         rigid.velocity = new Vector2(h * moveSpeed, v * moveSpeed);
     }
 
-    void CheckInput()
-    {
-        bool hDown = PlayerInput.hDown;
-        bool vDown = PlayerInput.vDown;
-        bool hUp = PlayerInput.hUp;
-        bool vUp = PlayerInput.vUp;
+    //void CheckInput()
+    //{
+    //    bool hDown = PlayerInput.hDown;
+    //    bool vDown = PlayerInput.vDown;
+    //    bool hUp = PlayerInput.hUp;
+    //    bool vUp = PlayerInput.vUp;
 
-        if (hDown || vUp)
-            isHorizontalMove = true;
-        else if (vDown || hUp)
-            isHorizontalMove = false;
+    //    if (hDown || vUp)
+    //        isHorizontalMove = true;
+    //    else if (vDown || hUp)
+    //        isHorizontalMove = false;
 
-        if (vDown && PlayerInput.vRaw == 1)
-            dirVec = Vector3.up;
-        else if (vDown && PlayerInput.vRaw == -1)
-            dirVec = Vector3.down;
-        else if (hDown && PlayerInput.hRaw == -1)
-            dirVec = Vector3.left;
-        else if (hDown && PlayerInput.hRaw == 1)
-            dirVec = Vector3.right;
-    }
+    //    if (Input.geta && PlayerInput.vRaw == 1)
+    //        dirVec = Vector3.up;
+    //    else if (vDown && PlayerInput.vRaw == -1)
+    //        dirVec = Vector3.down;
+    //    else if (hDown && PlayerInput.hRaw == -1)
+    //        dirVec = Vector3.left;
+    //    else if (hDown && PlayerInput.hRaw == 1)
+    //        dirVec = Vector3.right;
+    //}
 
     void MoveFunction2()
     {
         if (!isMoving)
         {
-            input.x = PlayerInput.hRaw;
-            input.y = PlayerInput.vRaw;
+            input.x = Input.GetAxisRaw("Horizontal");
+            input.y = Input.GetAxisRaw("Vertical");
 
             if (input.x != 0) input.y = 0;
+
+            //dirVec = new Vector3(input.x, input.y);
 
             if (input != Vector2.zero)
             {
@@ -147,25 +149,6 @@ public class PlayerActions : MonoBehaviour
                 }
             }
         }
-        //if (!isMoving && !isHorizontalMove)
-        //{
-        //    input.y = PlayerInput.vRaw;
-
-        //    if (input != Vector2.zero)
-        //    {
-        //        var targetPos = transform.position;
-        //        var tmp = targetPos;
-        //        targetPos.y += input.y;
-        //        if (IsWalkable(targetPos))
-        //        {
-        //            coroutine = Move(targetPos, tmp);
-        //            StartCoroutine(coroutine);
-        //        }
-        //    }
-
-        //}
-
-        
     }
 
     IEnumerator Move(Vector3 targetPos, Vector3 tmp)
@@ -198,11 +181,10 @@ public class PlayerActions : MonoBehaviour
     {
         if (Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
         {
-            if(Random.Range(1, 101) <= 10)
+            if(UnityEngine.Random.Range(1, 101) <= 10)
             {
-                camera.SetActive(false);
-                battlesystem.SetActive(true);
                 Debug.Log("Encounterd pokemon");
+                OnEncountered();
             }
         }
     }

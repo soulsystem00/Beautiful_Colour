@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public Text talkText;
     public GameObject scanObject;
     public GameObject Player;
-    public PlayerInput playerInput;
+    //public PlayerInput playerInput;
     public TalkManager talkManager;
 
     public GameObject additional;
@@ -69,7 +69,7 @@ public class GameManager : MonoBehaviour
         {
             talkindex = 0;
             //TextUI.SetActive(false);
-            playerInput.state = PlayerInput.State.Move;
+            //playerInput.state = PlayerInput.State.Move;
 
             if(colour.Character != Colour.character.NPC)
             {
@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
         {
             talkText.text = talkData;
         }
-        playerInput.state = PlayerInput.State.Talk;
+        //playerInput.state = PlayerInput.State.Talk;
         talkindex++;
     }
 }

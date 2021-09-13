@@ -2,16 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Party : MonoBehaviour
+public class MapArea : MonoBehaviour
 {
-    [SerializeField] List<Unit> units;
+    [SerializeField] List<Unit> wildUnits;
+
+    public List<Unit> GetWildUnit()
+    {
+        foreach (var i in wildUnits)
+            i.init();
+        return wildUnits;
+    }
     // Start is called before the first frame update
     void Start()
     {
-        foreach(var unit in units)
-        {
-            unit.init();
-        }
+        
     }
 
     // Update is called once per frame

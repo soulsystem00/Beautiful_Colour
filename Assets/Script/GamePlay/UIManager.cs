@@ -10,7 +10,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    public PlayerInput PlayerInput;
+    //public PlayerInput PlayerInput;
     List<Text> menuItems;
     public int selectedItem = 0;
 
@@ -22,7 +22,7 @@ public class UIManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        PlayerInput.MenuFunction += MenuFunction;
+        //PlayerInput.MenuFunction += MenuFunction;
     }
 
     // Update is called once per frame
@@ -30,10 +30,10 @@ public class UIManager : MonoBehaviour
     {
         int prevSelection = selectedItem;
 
-        if (PlayerInput.DownArrow)
-            selectedItem++;
-        else if (PlayerInput.UpArrow)
-            selectedItem--;
+        //if (PlayerInput.DownArrow)
+        //    selectedItem++;
+        //else if (PlayerInput.UpArrow)
+        //    selectedItem--;
 
 
         selectedItem = Mathf.Clamp(selectedItem, 0, menuItems.Count - 1);

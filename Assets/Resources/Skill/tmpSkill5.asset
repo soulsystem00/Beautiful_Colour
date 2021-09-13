@@ -15,6 +15,6 @@ MonoBehaviour:
   name: tmpSkill5
   description: 
   type: 1
-  power: 10
+  power: 13
   accuracy: 10
-  pp: 30
+  pp: 10
