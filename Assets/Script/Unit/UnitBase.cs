@@ -30,6 +30,7 @@ public class UnitBase : ScriptableObject
     [SerializeField] int maxHp;
     [SerializeField] int energy;
     [SerializeField] int maxEnergy;
+    [SerializeField] bool isEnemy;
 
     [Header("레벨에 따른 증가량")]
     [SerializeField] int physicsAttack_Inc;
@@ -72,7 +73,7 @@ public class UnitBase : ScriptableObject
     public int MaxHp_Inc { get => maxHp_Inc; }
     public int MaxEnergy_Inc { get => maxEnergy_Inc; }
     public List<LearnableSkill> LearnableSkills { get => learnableSkills; }
-    
+    public bool IsEnemy { get => isEnemy; }
 }
 public enum UnitType
 {

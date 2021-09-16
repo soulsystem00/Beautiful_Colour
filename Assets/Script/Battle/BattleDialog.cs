@@ -65,7 +65,7 @@ public class BattleDialog : MonoBehaviour
         enemyInfo_details.Description.text = unit.Base.Description;
         enemyInfo_details.Name.text = unit.Base.name;
         enemyInfo_details.HP.text = $"{unit.HP} / {unit.MaxHp}";
-        enemyInfo_details.HpBar.transform.localScale = new Vector3(unit.HP / unit.MaxHp, 1f, 1f);
+        enemyInfo_details.HpBar.transform.localScale = new Vector3((float)unit.HP / unit.MaxHp, 1f, 1f);
 
         //ppText.text = $"PP {move.PP}/{move.Base.PP}";
         //typeText.text = move.Base.Type.ToString();

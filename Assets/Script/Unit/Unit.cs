@@ -78,10 +78,63 @@ public class Unit
         {
             Fainted = false,
             Critical = 1f,
-            TypeEffectiveness = 1f
+            TypeEffectiveness = 1f,
+            Damage = 0
         };
 
+        int cal_Val = skill.Base.Power - this.MagicalDefense;
+
+        if (cal_Val <= 0)
+            cal_Val = 1;
+
+        int damage = 2 * cal_Val;
+
+        HP -= damage;
+
+        damagedatails.Damage = damage;
+
+        if (HP <= 0)
+        {
+            HP = 0;
+            damagedatails.Fainted = true;
+        }
+
         return damagedatails;
+    }
+
+    public DamageDetails TakeDamage(int Attack, Unit attacker)
+    {
+        var damagedatails = new DamageDetails()
+        {
+            Fainted = false,
+            Critical = 1f,
+            TypeEffectiveness = 1f,
+            Damage = 0
+        };
+
+        int cal_Val = attacker.PhysicsAttack - this.PhysicsDefense;
+
+        if (cal_Val <= 0)
+            cal_Val = 1;
+
+        int damage = 2 * cal_Val;
+
+        HP -= damage;
+
+        if(HP <= 0)
+        {
+            HP = 0;
+            damagedatails.Fainted = true;
+        }
+        damagedatails.Damage = damage;
+
+        return damagedatails;
+    }
+
+    public Unit GetRandomUnit(List<Unit> units)
+    {
+        int r = Random.Range(0, units.Count);
+        return units[r];
     }
 }
 
@@ -90,4 +143,5 @@ public class DamageDetails
     public bool Fainted { get; set; }
     public float Critical { get; set; }
     public float TypeEffectiveness { get; set; }
+    public int Damage { get; set; }
 }

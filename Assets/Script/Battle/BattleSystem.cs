@@ -3,10 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
+using System.Linq;
 
 public enum BattleState
 {
-    Start, PlayerAction, PlayerSkill, EnemySelect, EnemySkill, Busy
+    Start, PlayerAction, PlayerSkill, EnemySelect, EnemySkill, Busy, BattleOver
 }
 
 public class BattleSystem : MonoBehaviour
@@ -19,48 +20,98 @@ public class BattleSystem : MonoBehaviour
     public event Action<bool> OnBattleOver;
 
     BattleState state;
-    public int currentAction;
-    public int currentSkill;
-    public int currentUnit;
-    public int currentEnemy;
+    int currentAction;
+    int currentSkill;
+    int currentUnit;
+    int currentEnemy;
 
     UnitParty playerParty;
     List<Unit> enemyUnits;
+    List<Unit> battleUnits = new List<Unit>();
     // Start is called before the first frame update
     public void StartBattle(UnitParty playerParty, List<Unit> enemyUnits)
     {
         currentUnit = 0;
         this.playerParty = playerParty;
         this.enemyUnits = enemyUnits;
+
+        battleUnits.AddRange(enemyUnits);
+        battleUnits.AddRange(playerParty.Units);
+
+        battleUnits = battleUnits.OrderByDescending(unit => unit.Base.Speed).ThenBy(unit => unit.Base.IsEnemy).ToList();
+
         StartCoroutine(SetupBattle());
     }
 
     public IEnumerator SetupBattle()
     {
-        for (int i = 0; i < playerParty.Units.Count; i++)
+        for (int i = 0; i < playerHud.unitHudElements.Count; i++)
         {
-            playerHud.unitHudElements[i].SetData(playerParty.Units[i]);
-            playerHud.unitHudElements[i].SetSprite();
-        }
-        for (int i = 0; i < enemyUnits.Count; i++)
-        {
-            enemyHud.unitHudElements[i].SetData(enemyUnits[i]);
-            enemyHud.unitHudElements[i].SetSprite();
-        }
+            if(i < playerParty.Units.Count)
+            {
+                playerHud.unitHudElements[i].SetData(playerParty.Units[i]);
+            }
+            else
+            {
+                playerHud.unitHudElements[i].gameObject.SetActive(false);
+            }
 
+        }
+        for (int i = 0; i < enemyHud.unitHudElements.Count; i++)
+        {
+            if(i < enemyUnits.Count)
+            {
+                enemyHud.unitHudElements[i].SetData(enemyUnits[i]);
+            }
+            else
+            {
+                enemyHud.unitHudElements[i].gameObject.SetActive(false);
+            }
+        }
+        
         battleDialog.SetEnemyNames(enemyUnits);
 
         yield return battleDialog.TypeDialog("야생의 적을 만났다.");
 
-        PlayerAction();
+        CheckEnemy();
     }
+    void CheckEnemy()
+    {
+        var pUnits = playerParty.Units.Where(x => x.HP > 0).FirstOrDefault();
+        var eUnits = enemyUnits.Where(x => x.HP > 0).FirstOrDefault();
 
+        while (battleUnits[currentUnit].HP <= 0)
+            currentUnit++;
+
+        if (pUnits == null)
+        {
+            // enemy win;
+            BattleOver(false);
+        }
+        else if (eUnits == null)
+        {
+            // player win;
+            BattleOver(true);
+        }
+        else
+        {
+            if (battleUnits[currentUnit].Base.IsEnemy)
+            {
+                StartCoroutine(EnemySkill());
+            }
+            else
+            {
+                PlayerAction();
+            }
+        }
+
+    }
     void PlayerAction()
     {
         state = BattleState.PlayerAction;
         StartCoroutine(battleDialog.TypeDialog("행동을 선택하세요."));
         battleDialog.EnableActionSelector(true);
-        battleDialog.SetSkillNames(playerParty.Units[currentUnit].Skills);
+        battleDialog.SetSkillNames(battleUnits[currentUnit].Skills);
     }
     void PlayerSkill()
     {
@@ -78,43 +129,97 @@ public class BattleSystem : MonoBehaviour
 
     IEnumerator PerformPlayerSkill()
     {
-        yield return battleDialog.TypeDialog($"{playerParty.Units[currentUnit].Base.Name}이 {enemyUnits[currentEnemy].Base.Name}에게 {playerParty.Units[currentUnit].Skills[currentSkill].Base.Name}을 사용합니다.");
+        state = BattleState.Busy;
+        yield return battleDialog.TypeDialog
+            ($"{battleUnits[currentUnit].Base.Name}이 {enemyUnits[currentEnemy].Base.Name}에게 {battleUnits[currentUnit].Skills[currentSkill].Base.Name}을 사용합니다.");
+
+        // attack animation
+        // hit animation
+        enemyHud.unitHudElements[currentEnemy].PlayHitAnimaion();
         yield return new WaitForSeconds(1f);
-        if (currentUnit < playerParty.Units.Count - 1)
+
+        var damageDetails = enemyUnits[currentEnemy].TakeDamage(battleUnits[currentUnit].Skills[currentSkill], battleUnits[currentUnit]);
+        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {enemyUnits[currentEnemy].Base.Name}에게 {damageDetails.Damage}의 피해를 줬습니다. ");
+        yield return enemyHud.unitHudElements[currentEnemy].UpdateHP();
+
+        if (damageDetails.Fainted)
+        {
+            yield return battleDialog.TypeDialog($"{enemyUnits[currentEnemy].Base.Name}가 쓰러졌습니다.");
+        }
+
+        if (currentUnit < battleUnits.Count - 1)
         {
             currentUnit++;
-            PlayerAction();
+            CheckEnemy();
         }
         else
         {
             currentUnit = 0;
-            StartCoroutine(EnemySkill());
+            CheckEnemy();
         }
     }
     IEnumerator PerformPlayerAttack()
     {
-        yield return battleDialog.TypeDialog($"{playerParty.Units[currentUnit].Base.Name}이 {enemyUnits[currentEnemy].Base.Name}을 공격합니다.");
+        state = BattleState.Busy;
+        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이 {enemyUnits[currentEnemy].Base.Name}을 공격합니다.");
         yield return new WaitForSeconds(1f);
-        if(currentUnit < playerParty.Units.Count - 1)
+
+        enemyHud.unitHudElements[currentEnemy].PlayHitAnimaion();
+        yield return new WaitForSeconds(1f);
+
+        var damageDetails = enemyUnits[currentEnemy].TakeDamage(battleUnits[currentUnit].PhysicsAttack, battleUnits[currentUnit]);
+        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {enemyUnits[currentEnemy].Base.Name}에게 {damageDetails.Damage}의 피해를 줬습니다. ");
+        yield return enemyHud.unitHudElements[currentEnemy].UpdateHP();
+
+        if(damageDetails.Fainted)
+        {
+            enemyHud.unitHudElements[currentEnemy].PlayFaintedAnimation();
+            yield return battleDialog.TypeDialog($"{enemyUnits[currentEnemy].Base.Name}이(가) 쓰러졌습니다.");
+        }
+
+        if (currentUnit < battleUnits.Count - 1)
         {
             currentUnit++;
-            PlayerAction();
+            CheckEnemy();
         }
         else
         {
             currentUnit = 0;
-            StartCoroutine(EnemySkill());
+            CheckEnemy();
         }
     }
     IEnumerator EnemySkill()
     {
-        state = BattleState.EnemySkill;
-        UnityEngine.Debug.Log("Enemy Turn Start");
-        yield return battleDialog.TypeDialog("적이 공격 합니다.");
+        state = BattleState.Busy;
+
+        var unit = battleUnits[currentUnit].GetRandomUnit(playerParty.Units);
+        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이 {unit.Base.Name}을 공격합니다.");
         yield return new WaitForSeconds(1f);
-        yield return battleDialog.TypeDialog("적의 공격이 끝났습니다.");
-        UnityEngine.Debug.Log("Enemy Turn End");
-        PlayerAction();
+
+        enemyHud.unitHudElements.Where(x => x.Unit == battleUnits[currentUnit]).FirstOrDefault().PlayAttackAnimation();
+        var damageDetails = unit.TakeDamage(battleUnits[currentUnit].Skills[0], battleUnits[currentUnit]);
+        yield return playerHud.unitHudElements.Where(x => x.Unit == unit).FirstOrDefault().UpdateHP();
+        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {unit.Base.Name}에게 {damageDetails.Damage}의 피해를 줬습니다. ");
+
+        yield return new WaitForSeconds(1f);
+
+        if(damageDetails.Fainted)
+        {
+            
+            yield return battleDialog.TypeDialog($"{unit.Base.Name}이(가) 쓰러졌습니다.");
+        }
+
+        if(currentUnit < battleUnits.Count - 1)
+        {
+            currentUnit++;
+            CheckEnemy();
+        }
+        else
+        {
+            currentUnit = 0;
+            CheckEnemy();
+        }
+
     }
 
     public void HandleUpdate()
@@ -273,9 +378,10 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    void BattleOver(bool won)
     {
-        
+        state = BattleState.BattleOver;
+        OnBattleOver(won);
     }
+
 }
