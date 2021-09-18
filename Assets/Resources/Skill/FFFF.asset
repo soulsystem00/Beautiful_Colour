@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 038b58106e641244091672f829aad2a8, type: 3}
-  m_Name: tmpSkill3
+  m_Name: FFFF
   m_EditorClassIdentifier: 
-  name: "\uAF43\uC774 \uC9C4 \uC790\uB9AC\uC5D0\uB294"
-  description: 
+  name: "\uAC15\uD0C0"
+  description: "\uC528\uAC8C \uB54C\uB9B0\uB2E4"
   type: 1
-  power: 9
-  accuracy: 10
-  pp: 30
+  power: 10
+  accuracy: 0
+  pp: 0

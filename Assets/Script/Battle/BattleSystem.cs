@@ -71,7 +71,7 @@ public class BattleSystem : MonoBehaviour
         
         battleDialog.SetEnemyNames(enemyUnits);
 
-        yield return battleDialog.TypeDialog("야생의 적을 만났다.");
+        yield return battleDialog.TypeDialog("정적을 갉아먹고 적이 나타났다.");
 
         CheckEnemy();
     }
@@ -109,7 +109,7 @@ public class BattleSystem : MonoBehaviour
     void PlayerAction()
     {
         state = BattleState.PlayerAction;
-        StartCoroutine(battleDialog.TypeDialog("행동을 선택하세요."));
+        StartCoroutine(battleDialog.TypeDialog("어떤 행동을 취할 것인가?"));
         battleDialog.EnableActionSelector(true);
         battleDialog.SetSkillNames(battleUnits[currentUnit].Skills);
     }
@@ -131,7 +131,7 @@ public class BattleSystem : MonoBehaviour
     {
         state = BattleState.Busy;
         yield return battleDialog.TypeDialog
-            ($"{battleUnits[currentUnit].Base.Name}이 {enemyUnits[currentEnemy].Base.Name}에게 {battleUnits[currentUnit].Skills[currentSkill].Base.Name}을 사용합니다.");
+            ($"{battleUnits[currentUnit].Base.Name}이 {enemyUnits[currentEnemy].Base.Name}에게 {battleUnits[currentUnit].Skills[currentSkill].Base.Name}을 사용.");
 
         // attack animation
         // hit animation
@@ -139,12 +139,12 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         var damageDetails = enemyUnits[currentEnemy].TakeDamage(battleUnits[currentUnit].Skills[currentSkill], battleUnits[currentUnit]);
-        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {enemyUnits[currentEnemy].Base.Name}에게 {damageDetails.Damage}의 피해를 줬습니다. ");
+        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {enemyUnits[currentEnemy].Base.Name}에게 {damageDetails.Damage}의 피해를 입혔다. ");
         yield return enemyHud.unitHudElements[currentEnemy].UpdateHP();
 
         if (damageDetails.Fainted)
         {
-            yield return battleDialog.TypeDialog($"{enemyUnits[currentEnemy].Base.Name}가 쓰러졌습니다.");
+            yield return battleDialog.TypeDialog($"{enemyUnits[currentEnemy].Base.Name}가 쓰러졌다!");
         }
 
         if (currentUnit < battleUnits.Count - 1)
@@ -161,20 +161,20 @@ public class BattleSystem : MonoBehaviour
     IEnumerator PerformPlayerAttack()
     {
         state = BattleState.Busy;
-        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이 {enemyUnits[currentEnemy].Base.Name}을 공격합니다.");
+        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이 {enemyUnits[currentEnemy].Base.Name}을 공격.");
         yield return new WaitForSeconds(1f);
 
         enemyHud.unitHudElements[currentEnemy].PlayHitAnimaion();
         yield return new WaitForSeconds(1f);
 
         var damageDetails = enemyUnits[currentEnemy].TakeDamage(battleUnits[currentUnit].PhysicsAttack, battleUnits[currentUnit]);
-        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {enemyUnits[currentEnemy].Base.Name}에게 {damageDetails.Damage}의 피해를 줬습니다. ");
+        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {enemyUnits[currentEnemy].Base.Name}에게 {damageDetails.Damage}의 피해를 주었다. ");
         yield return enemyHud.unitHudElements[currentEnemy].UpdateHP();
 
         if(damageDetails.Fainted)
         {
             enemyHud.unitHudElements[currentEnemy].PlayFaintedAnimation();
-            yield return battleDialog.TypeDialog($"{enemyUnits[currentEnemy].Base.Name}이(가) 쓰러졌습니다.");
+            yield return battleDialog.TypeDialog($"{enemyUnits[currentEnemy].Base.Name}이(가) 쓰러졌다!");
         }
 
         if (currentUnit < battleUnits.Count - 1)
@@ -193,20 +193,20 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Busy;
 
         var unit = battleUnits[currentUnit].GetRandomUnit(playerParty.Units);
-        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이 {unit.Base.Name}을 공격합니다.");
+        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이 {unit.Base.Name}을 공격.");
         yield return new WaitForSeconds(1f);
 
         enemyHud.unitHudElements.Where(x => x.Unit == battleUnits[currentUnit]).FirstOrDefault().PlayAttackAnimation();
         var damageDetails = unit.TakeDamage(battleUnits[currentUnit].Skills[0], battleUnits[currentUnit]);
         yield return playerHud.unitHudElements.Where(x => x.Unit == unit).FirstOrDefault().UpdateHP();
-        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {unit.Base.Name}에게 {damageDetails.Damage}의 피해를 줬습니다. ");
+        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {unit.Base.Name}에게 {damageDetails.Damage}의 피해를 주었다. ");
 
         yield return new WaitForSeconds(1f);
 
         if(damageDetails.Fainted)
         {
             
-            yield return battleDialog.TypeDialog($"{unit.Base.Name}이(가) 쓰러졌습니다.");
+            yield return battleDialog.TypeDialog($"{unit.Base.Name}이(가) 쓰러졌다!");
         }
 
         if(currentUnit < battleUnits.Count - 1)

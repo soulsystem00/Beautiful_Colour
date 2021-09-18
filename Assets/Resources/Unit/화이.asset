@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e5cdfb11264c444da85f80287c8b523, type: 3}
   m_Name: "\uD654\uC774"
   m_EditorClassIdentifier: 
-  name: Gang
+  name: "\uD654\uC774"
   description: 
   frontSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
   backSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
@@ -28,6 +28,7 @@ MonoBehaviour:
   maxHp: 200
   energy: 60
   maxEnergy: 60
+  isEnemy: 0
   physicsAttack_Inc: 3
   magicalAttack_Inc: 2
   physicsDefence_Inc: 6

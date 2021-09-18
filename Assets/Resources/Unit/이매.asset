@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e5cdfb11264c444da85f80287c8b523, type: 3}
   m_Name: "\uC774\uB9E4"
   m_EditorClassIdentifier: 
-  name: Gum
+  name: "\uC774\uB9E4"
   description: 
   frontSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
   backSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
@@ -28,6 +28,7 @@ MonoBehaviour:
   maxHp: 150
   energy: 50
   maxEnergy: 50
+  isEnemy: 0
   physicsAttack_Inc: 6
   magicalAttack_Inc: 1
   physicsDefence_Inc: 2

@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e5cdfb11264c444da85f80287c8b523, type: 3}
   m_Name: EnemyTmp
   m_EditorClassIdentifier: 
-  name: Wolf
+  name: "\uB291\uB300"
   description: asdfasdfasdfasdf
-  frontSprite: {fileID: 21300000, guid: 3e18e7399bfd0904696d4230517dce40, type: 3}
-  backSprite: {fileID: 21300000, guid: 3e18e7399bfd0904696d4230517dce40, type: 3}
-  portraitSprite: {fileID: 21300000, guid: 3e18e7399bfd0904696d4230517dce40, type: 3}
-  dialogSprite: {fileID: 21300000, guid: 3e18e7399bfd0904696d4230517dce40, type: 3}
-  type1: 1
+  frontSprite: {fileID: 21300000, guid: c0dadd8ea5da0144698505cad5462a61, type: 3}
+  backSprite: {fileID: 21300000, guid: c0dadd8ea5da0144698505cad5462a61, type: 3}
+  portraitSprite: {fileID: 21300000, guid: c0dadd8ea5da0144698505cad5462a61, type: 3}
+  dialogSprite: {fileID: 21300000, guid: c0dadd8ea5da0144698505cad5462a61, type: 3}
+  type1: 0
   physicsAttack: 14
   magicalAttack: 3
   physicsDefence: 13

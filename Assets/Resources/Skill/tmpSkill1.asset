@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 038b58106e641244091672f829aad2a8, type: 3}
   m_Name: tmpSkill1
   m_EditorClassIdentifier: 
-  name: tmpSkill1
+  name: "\uC790\uC0C9\uC758 \uBCBD"
   description: 
   type: 1
   power: 5
