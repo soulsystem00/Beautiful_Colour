@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 038b58106e641244091672f829aad2a8, type: 3}
-  m_Name: FFFF
+  m_Name: "\uACF5\uACA9\uB825\uC99D\uAC00"
   m_EditorClassIdentifier: 
-  name: "\uAC15\uD0C0"
-  description: "\uC528\uAC8C \uB54C\uB9B0\uB2E4"
+  name: "\uACF5\uACA9\uB825\uC99D\uAC00"
+  description: 
   type: 1
-  power: 10
-  accuracy: 0
-  pp: 0
+  power: 0
+  accuracy: 10
+  pp: 10
   skillCategoty: 2
   effects:
     boosts:

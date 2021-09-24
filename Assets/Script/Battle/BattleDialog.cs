@@ -72,7 +72,7 @@ public class BattleDialog : MonoBehaviour
     }
     public void UpdateSkillSelection(int selectedMove, Skill skill)
     {
-        for (int i = 0; i < skillTexts.Count; i++)
+        for (int i = 0; i < skillTexts.Count - 1; i++)
         {
             if (i == selectedMove)
             {
@@ -129,7 +129,7 @@ public class BattleDialog : MonoBehaviour
     {
         for (int i = 0; i < skillTexts.Count; i++)
         {
-            if (i < skills.Count)
+            if (i < skills.Count - 1)
             {
                 skillTexts[i].text = skills[i].Base.Name;
             }

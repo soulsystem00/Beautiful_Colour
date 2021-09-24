@@ -14,14 +14,15 @@ public class SkillBase : ScriptableObject
     [SerializeField] int power;
     [SerializeField] int accuracy;
     [SerializeField] int pp;
-
+    [SerializeField] SkillCategory skillCategoty;
+    [SerializeField] SkillEffects effects;
+    [SerializeField] SkillTarget skillTarget;
     public string Name { get => name; }
     public string Description { get => description; }
     public UnitType Type { get => type; }
     public int Power { get => power; }
     public int Accuracy { get => accuracy; }
     public int PP { get => pp; }
-
     public bool IsSpecial
     {
         get
@@ -29,4 +30,30 @@ public class SkillBase : ScriptableObject
             return true;
         }
     }
+
+    public SkillCategory SkillCategoty { get => skillCategoty; }
+    public SkillEffects Effects { get => effects; }
+    public SkillTarget SkillTarget { get => skillTarget; }
+}
+[System.Serializable]
+public class SkillEffects
+{
+    [SerializeField] List<StatBoost> boosts;
+
+    public List<StatBoost> Boosts { get => boosts; }
+}
+[System.Serializable]
+public class StatBoost
+{
+    public Stat stat;
+    public int boost;
+    public int turn;
+}
+public enum SkillCategory
+{
+    일반공격, 특수공격, 버프
+}
+public enum SkillTarget
+{
+    상대, 자신
 }

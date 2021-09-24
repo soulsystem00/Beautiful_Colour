@@ -55,23 +55,23 @@ public class UnitBase : ScriptableObject
     public Sprite DialogSprite { get => dialogSprite; }
     public UnitType Type1 { get => type1; }
     public int MaxHp { get => maxHp; }
+    public int MaxEnergy { get => maxEnergy; }
     public int PhysicsAttack { get => physicsAttack; }
     public int MagicalAttack { get => magicalAttack; }
     public int PhysicsDefence { get => physicsDefence; }
     public int MagicalDefence { get => magicalDefence; }
     public int Speed { get => speed; }
     public int Evasion { get => evasion; }
-    public int Energy { get => energy; }
-    public int MaxEnergy { get => maxEnergy; }
 
+    public int MaxHp_Inc { get => maxHp_Inc; }
+    public int MaxEnergy_Inc { get => maxEnergy_Inc; }
     public int PhysicsAttack_Inc { get => physicsAttack_Inc; }
     public int MagicalAttack_Inc { get => magicalAttack_Inc; }
     public int PhysicsDefence_Inc { get => physicsDefence_Inc; }
     public int MagicalDefence_Inc { get => magicalDefence_Inc; }
     public int Speed_Inc { get => speed_Inc; }
     public int Evasion_Inc { get => evasion_Inc; }
-    public int MaxHp_Inc { get => maxHp_Inc; }
-    public int MaxEnergy_Inc { get => maxEnergy_Inc; }
+
     public List<LearnableSkill> LearnableSkills { get => learnableSkills; }
     public bool IsEnemy { get => isEnemy; }
 }
@@ -81,6 +81,16 @@ public enum UnitType
     인간,
     악귀,
     마왕
+}
+public enum Stat
+{
+    PhysicsAttack,
+    MagicalAttack,
+    PhysicsDefence,
+    MagicalDefence,
+    Speed,
+    Evasion,
+
 }
 
 [System.Serializable]

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class BattleUnit : MonoBehaviour
+public class BattleUnit
 {
     [SerializeField] bool isEnemyUnit;
     [SerializeField] UnitHudElement hud;
@@ -25,11 +25,20 @@ public class BattleUnit : MonoBehaviour
         hud.SetData(unit);
         hud.SetSprite();
 
-
+        hud.PlayerEnterAnimation();
         //PlayerEnterAnimation();
     }
+    public BattleUnit(Unit unit, UnitHudElement unitHudElement)
+    {
+        this.unit = unit;
+        hud = unitHudElement;
+        isEnemyUnit = unit.Base.IsEnemy;
+        hud.SetData(unit);
+        hud.SetSprite();
 
-
+        hud.PlayerEnterAnimation();
+        //PlayerEnterAnimation();
+    }
 
     //public void PlayerEnterAnimation()
     //{

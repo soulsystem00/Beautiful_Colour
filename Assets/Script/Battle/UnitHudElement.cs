@@ -69,7 +69,7 @@ public class UnitHudElement : MonoBehaviour
     {
         if (isEnemy)
         {
-            Sprite.color = new Color(originalColor.r, originalColor.g, originalColor.b, 0f);
+            Sprite.color = new Color(originalColor.r, originalColor.g, originalColor.b, 1f);
             Sprite.DOFade(1f, 1f);
         }
     }
