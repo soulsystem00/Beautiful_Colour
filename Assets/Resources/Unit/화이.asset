@@ -38,8 +38,6 @@ MonoBehaviour:
   maxHp_Inc: 40
   maxEnergy_Inc: 10
   learnableSkills:
-  - skillBase: {fileID: 11400000, guid: fa30c480d16fa1d4585a0a9edeb108ba, type: 2}
-    level: 1
   - skillBase: {fileID: 11400000, guid: 32cf9c606a50b2644b2bfef04b6ecd0d, type: 2}
     level: 2
   - skillBase: {fileID: 11400000, guid: b216dcb1bee6f664aa8d9c3d5002ff2f, type: 2}
