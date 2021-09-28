@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public enum GameState { FreeRome, Battle }
+public enum GameState { FreeRome, Battle, Dialog }
 
 public class GameController : MonoBehaviour
 {
@@ -25,6 +25,17 @@ public class GameController : MonoBehaviour
     {
         playerActions.OnEncountered += StartBattle;
         battleSystem.OnBattleOver += EndBattle;
+
+        DialogManager.Instance.OnShowDialog += () =>
+        {
+            state = GameState.Dialog;
+        };
+        DialogManager.Instance.OnCloseDialog += () =>
+        {
+            if (state == GameState.Dialog)
+                state = GameState.FreeRome;
+        };
+
     }
 
     void StartBattle()
@@ -53,6 +64,10 @@ public class GameController : MonoBehaviour
         else if(state == GameState.Battle)
         {
             battleSystem.HandleUpdate();
+        }
+        else if(state == GameState.Dialog)
+        {
+            DialogManager.Instance.HandleUpdate();
         }
 
     }

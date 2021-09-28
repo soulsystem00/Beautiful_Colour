@@ -18,15 +18,15 @@ TagManager:
   - Obstacle
   - Gate
   - Colour
-  - LongGrass
+  - 
   - HPbar
   - HPbar back
   - 
   - 
-  - 
-  - 
-  - 
-  - 
+  - SolidObjects
+  - LongGrass
+  - Interactable
+  - Player
   - 
   - 
   - 

@@ -247,12 +247,16 @@ public class BattleSystem : MonoBehaviour
     IEnumerator RunAttack(BattleUnit sourceUnit, BattleUnit targetUnit, Skill skill)
     {
         state = BattleState.Busy;
+
+
         yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetUnit.unit.Base.Name}에게 {skill.Base.Name}을(를) 사용.");
 
+        sourceUnit.unit.energy -= skill.PP;
+        yield return sourceUnit.Hud.UpdateHP();
         // attack animation
         // hit animation
 
-        if(sourceUnit.unit.Base.IsEnemy)
+        if (sourceUnit.unit.Base.IsEnemy)
             sourceUnit.Hud.PlayAttackAnimation();
         yield return new WaitForSeconds(1f);
         targetUnit.Hud.PlayHitAnimaion();
@@ -404,6 +408,7 @@ public class BattleSystem : MonoBehaviour
             else if(currentAction == 4)
             {
                 //run
+                BattleOver(false);
             }
         }
     }
@@ -437,6 +442,7 @@ public class BattleSystem : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
+            if (battleUnits[currentUnit].unit.energy < battleUnits[currentUnit].unit.Skills[currentSkill].PP) return;
             battleDialog.EnableSkillSelector(false);
             EnemySelect();
         }

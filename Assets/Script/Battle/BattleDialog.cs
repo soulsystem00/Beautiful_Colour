@@ -84,7 +84,7 @@ public class BattleDialog : MonoBehaviour
             }
         }
         skillDetailText[0].text = skill.Base.Power.ToString();
-        skillDetailText[1].text = $"PP {skill.PP}/{skill.Base.PP}";
+        skillDetailText[1].text = $"마나 소모량 {skill.PP}";
         //ppText.text = $"PP {move.PP}/{move.Base.PP}";
         //typeText.text = move.Base.Type.ToString();
     }

@@ -11,6 +11,7 @@ public class PlayerActions : MonoBehaviour
 {
     public float moveSpeed;
     public LayerMask solidObjectsLayer;
+    public LayerMask grassLayer;
     public LayerMask colour;
     IEnumerator coroutine;
     float h;
@@ -35,27 +36,26 @@ public class PlayerActions : MonoBehaviour
 
     Vector3 dirVec;
     public GameObject scanObject;
-
     public GameManager manager;
-
-
-    public LayerMask grassLayer;
 
     public GameObject camera;
     public GameObject battlesystem;
+
+    public Animator animator;
 
     public event Action OnEncountered; 
     private void Awake()
     {
         //manager = FindObjectOfType<GameManager>();
         //manager.Player = gameObject;
-        DontDestroyOnLoad(this.gameObject);
+        //DontDestroyOnLoad(this.gameObject);
     }
 
     // Start is called before the first frame update
     void Start()
     {
         rigid = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         //PlayerInput = GameObject.Find("GameController").GetComponent<PlayerInput>();
     }
 
@@ -64,8 +64,9 @@ public class PlayerActions : MonoBehaviour
     {
         //MoveFunction1();
             //CheckInput();
-            MoveFunction2();
-
+        MoveFunction2();
+        if (Input.GetKeyDown(KeyCode.Z))
+            Interact();
         //if (Input.GetKeyDown(KeyCode.Z) && scanObject != null && (PlayerInput.state == PlayerInput.State.Move || PlayerInput.state == PlayerInput.State.Talk))
         //{
         //    //Debug.Log("this is " + scanObject.name);
@@ -138,6 +139,9 @@ public class PlayerActions : MonoBehaviour
 
             if (input != Vector2.zero)
             {
+                animator.SetFloat("moveX", input.x);
+                animator.SetFloat("moveY", input.y);
+
                 var targetPos = transform.position;
                 var tmp = targetPos;
                 targetPos.x += input.x;
@@ -169,17 +173,29 @@ public class PlayerActions : MonoBehaviour
 
     private bool IsWalkable(Vector3 targetPos)
     {
-        if(Physics2D.OverlapCircle(targetPos, 0.3f, solidObjectsLayer) != null || Physics2D.OverlapCircle(targetPos, 0.3f, colour) != null)
+        if(Physics2D.OverlapCircle(targetPos, 0.3f, GameLayers.i.SolidObjectsLayer | GameLayers.i.InteractableLayer | GameLayers.i.Colour) != null)
         {
             return false;
         }
 
         return true;
     }
+    void Interact()
+    {
+        var facingDir = new Vector3(animator.GetFloat("moveX"), animator.GetFloat("moveY"));
+        var interactPos = transform.position + facingDir;
 
+        Debug.DrawLine(transform.position, interactPos, Color.red, 0.5f);
+
+        var collider = Physics2D.OverlapCircle(interactPos, 0.3f, GameLayers.i.InteractableLayer);
+        if(collider != null)
+        {
+            collider.GetComponent<Interactable>()?.Interact(transform);
+        }
+    }
     private void CheckForEncounters()
     {
-        if (Physics2D.OverlapCircle(transform.position, 0.2f, grassLayer) != null)
+        if (Physics2D.OverlapCircle(transform.position, 0.2f, GameLayers.i.GrassLayer) != null)
         {
             if(UnityEngine.Random.Range(1, 101) <= 10)
             {
