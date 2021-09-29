@@ -7,17 +7,20 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public enum GameState { FreeRome, Battle, Dialog }
+public enum GameState { FreeRome, Battle, Dialog, Paused }
 
 public class GameController : MonoBehaviour
 {
     [SerializeField] PlayerActions playerActions;
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
-    public GameState state;
+
+    GameState state;
+    GameState stateBeforePause;
+    public static GameController Instance { get; private set; }
     private void Awake()
     {
-
+        Instance = this;
     }
 
     // Start is called before the first frame update
@@ -37,8 +40,19 @@ public class GameController : MonoBehaviour
         };
 
     }
-
-    void StartBattle()
+    public void PauseGame(bool pause)
+    {
+        if(pause)
+        {
+            stateBeforePause = state;
+            state = GameState.Paused;
+        }
+        else
+        {
+            state = stateBeforePause;
+        }
+    }
+    public void StartBattle()
     {
         state = GameState.Battle;
         battleSystem.gameObject.SetActive(true);

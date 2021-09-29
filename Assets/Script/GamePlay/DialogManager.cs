@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
@@ -9,6 +10,7 @@ using UnityEngine.UI;
 public class DialogManager : MonoBehaviour
 {
     [SerializeField] GameObject dialogBox;
+    
     [SerializeField] Text dialogText;
     [SerializeField] int lettersPerSecond;
 
@@ -24,12 +26,19 @@ public class DialogManager : MonoBehaviour
     Action onDialogFinished;
     int currentLine = 0;
     bool isTyping;
-
+    
     public bool IsShowing { get; set; }
-    public IEnumerator ShowDialog(Dialog dialog, Action onFinished = null)
+
+
+    [SerializeField] GameObject selectionBox;
+     List<Text> texts;
+    [SerializeField] Color highlightColor;
+    bool selection;
+    int currentSelect = 0;
+    public IEnumerator ShowDialog(Dialog dialog, Action onFinished = null, bool selection = false)
     {
         yield return new WaitForEndOfFrame();
-
+        this.selection = selection;
         OnShowDialog?.Invoke();
 
         IsShowing = true;
@@ -41,21 +50,69 @@ public class DialogManager : MonoBehaviour
     }
     public void HandleUpdate()
     {
-        if(Input.GetKeyDown(KeyCode.Z) && !isTyping)
+        if (selectionBox.activeSelf)
         {
-            ++currentLine;
-            if(currentLine < dialog.Lines.Count)
+            SecondMenu();
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Z) && !isTyping)
             {
-                StartCoroutine(TypeDialog(dialog.Lines[currentLine]));
+                ++currentLine;
+                if (currentLine < dialog.Lines.Count)
+                {
+                    StartCoroutine(TypeDialog(dialog.Lines[currentLine]));
+                }
+                else
+                {
+                    if (selection)
+                    {
+                        texts = selectionBox.GetComponentsInChildren<Text>().ToList();
+                        selectionBox.SetActive(true);
+                    }
+                    else
+                    {
+                        currentLine = 0;
+                        currentSelect = 0;
+                        IsShowing = false;
+                        dialogBox.SetActive(false);
+                        onDialogFinished?.Invoke();
+                        OnCloseDialog?.Invoke();
+                    }
+                }
             }
+        }
+        
+
+        
+    }
+    void SecondMenu()
+    {
+        if (Input.GetKeyDown(KeyCode.DownArrow))
+            currentSelect = (currentSelect + 1) % texts.Count;
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+            currentSelect = (currentSelect - 1) % texts.Count;
+
+        for (int i = 0; i < texts.Count; i++)
+        {
+            if (i == currentSelect)
+                texts[i].color = highlightColor;
             else
-            {
-                currentLine = 0;
-                IsShowing = false;
-                dialogBox.SetActive(false);
+                texts[i].color = Color.black;
+        }
+        if (Input.GetKeyDown(KeyCode.Z))
+        {
+            currentLine = 0;
+            
+            IsShowing = false;
+            dialogBox.SetActive(false);
+            selectionBox.SetActive(false);
+
+            if (currentSelect == 0)
                 onDialogFinished?.Invoke();
-                OnCloseDialog?.Invoke();
-            }
+
+            OnCloseDialog?.Invoke();
+            currentSelect = 0;
         }
     }
     public IEnumerator TypeDialog(string line)

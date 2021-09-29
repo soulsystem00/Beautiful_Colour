@@ -18,7 +18,7 @@ TagManager:
   - Obstacle
   - Gate
   - Colour
-  - 
+  - ColourDisable
   - HPbar
   - HPbar back
   - 
@@ -27,7 +27,7 @@ TagManager:
   - LongGrass
   - Interactable
   - Player
-  - 
+  - Portal
   - 
   - 
   - 
