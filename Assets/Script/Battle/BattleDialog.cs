@@ -21,6 +21,7 @@ public class BattleDialog : MonoBehaviour
     [SerializeField] List<Text> skillDetailText;
 
     [SerializeField] EnemyInfo enemyInfo_details;
+    [SerializeField] SkillInfo skillInfo_Details;
     
     public IEnumerator TypeDialog(string dialog)
     {
@@ -70,11 +71,11 @@ public class BattleDialog : MonoBehaviour
         //ppText.text = $"PP {move.PP}/{move.Base.PP}";
         //typeText.text = move.Base.Type.ToString();
     }
-    public void UpdateSkillSelection(int selectedMove, Skill skill)
+    public void UpdateSkillSelection(int selectedSkill, Skill skill)
     {
         for (int i = 0; i < skillTexts.Count - 1; i++)
         {
-            if (i == selectedMove)
+            if (i == selectedSkill)
             {
                 skillTexts[i].color = highlightedColor;
             }
@@ -87,6 +88,23 @@ public class BattleDialog : MonoBehaviour
         skillDetailText[1].text = $"마나 소모량 {skill.PP}";
         //ppText.text = $"PP {move.PP}/{move.Base.PP}";
         //typeText.text = move.Base.Type.ToString();
+    }
+    public void UpdateSkillSelection2(int selectedSkill, Skill skill)
+    {
+        for (int i = 0; i < skillInfo_Details.Texts.Count; i++)
+        {
+            if (i == selectedSkill)
+            {
+                skillInfo_Details.Texts[i].color = highlightedColor;
+                skillInfo_Details.Scroll.value = 1 - (float)i / 3;
+            }
+            else
+            {
+                skillInfo_Details.Texts[i].color = Color.black;
+            }
+        }
+        skillInfo_Details.DescriptionText.text = skill.Base.Description;
+
     }
 
     public void EnableDialogText(bool enabled)
@@ -110,6 +128,10 @@ public class BattleDialog : MonoBehaviour
     public void EnableEnemyInfo(bool enabled)
     {
         enemyInfo.SetActive(enabled);
+    }
+    public void EnableSkillInfo(bool enabled)
+    {
+        skillInfo_Details.gameObject.SetActive(enabled);
     }
     public void SetEnemyNames(List<Unit> units)
     {
@@ -139,5 +161,18 @@ public class BattleDialog : MonoBehaviour
             }
         }
     }
-
+    public void SetSkillNames2(List<Skill> skills)
+    {
+        for (int i = 0; i < skillInfo_Details.Texts.Count; i++)
+        {
+            if (i < skills.Count - 1)
+            {
+                skillInfo_Details.Texts[i].text = skills[i].Base.Name;
+            }
+            else
+            {
+                skillInfo_Details.Texts[i].text = "-";
+            }
+        }
+    }
 }

@@ -21,7 +21,7 @@ public class BattleSystem : MonoBehaviour
 
     BattleState state;
     int currentAction;
-    int currentSkill;
+    public int currentSkill;
     int currentUnit;
     int currentEnemy;
 
@@ -112,11 +112,14 @@ public class BattleSystem : MonoBehaviour
     }
     void PlayerAction()
     {
+        currentAction = 0;
+        currentSkill = 0;
         state = BattleState.PlayerAction;
         battleDialog.EnableDialogText(true);
         StartCoroutine(battleDialog.TypeDialog("어떤 행동을 취할 것인가?"));
         battleDialog.EnableActionSelector(true);
-        battleDialog.SetSkillNames(battleUnits[currentUnit].unit.Skills);
+        //battleDialog.SetSkillNames(battleUnits[currentUnit].unit.Skills);
+        battleDialog.SetSkillNames2(battleUnits[currentUnit].unit.Skills);
     }
     void PlayerDefanse()
     {
@@ -129,8 +132,10 @@ public class BattleSystem : MonoBehaviour
     void PlayerSkill()
     {
         state = BattleState.PlayerSkill;
-        battleDialog.EnableSkillSelector(true);
-        battleDialog.EnableDialogText(false);
+        //battleDialog.EnableSkillSelector(true);
+        //battleDialog.EnableDialogText(false);
+
+        battleDialog.EnableSkillInfo(true);
     }
     void EnemySelect()
     {
@@ -143,130 +148,42 @@ public class BattleSystem : MonoBehaviour
     IEnumerator PerformPlayerSkill()
     {
         state = BattleState.Busy;
-
-        // todo
-        // 1. 적은 선택 되어있음 current enemy
-        // 2. 스킬도 선택 되어있음 currentskill
-        // 3. run attack 발동
-
         yield return RunAttack(battleUnits[currentUnit], battleUnits.Where(x => x.unit == enemyUnits[currentEnemy]).FirstOrDefault(), battleUnits[currentUnit].unit.Skills[currentSkill]);
 
-        /* yield return battleDialog.TypeDialog
-            ($"{battleUnits[currentUnit].unit.Base.Name}이 {enemyUnits[currentEnemy].Base.Name}에게 {battleUnits[currentUnit].Skills[currentSkill].Base.Name}을 사용.");
-
-        // attack animation
-        // hit animation
-        /*enemyHud.unitHudElements[currentEnemy].PlayHitAnimaion();
-        yield return new WaitForSeconds(1f);
-
-        var damageDetails = enemyUnits[currentEnemy].TakeDamage(battleUnits[currentUnit].Skills[currentSkill], battleUnits[currentUnit]);
-        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {enemyUnits[currentEnemy].Base.Name}에게 {damageDetails.Damage}의 피해를 입혔다. ");
-        yield return enemyHud.unitHudElements[currentEnemy].UpdateHP();
-
-        if (damageDetails.Fainted)
-        {
-            yield return battleDialog.TypeDialog($"{enemyUnits[currentEnemy].Base.Name}가 쓰러졌다!");
-        }
-
-        if (currentUnit < battleUnits.Count - 1)
-        {
-            currentUnit++;
-            CheckEnemy();
-        }
-        else
-        {
-            currentUnit = 0;
-            CheckEnemy();
-        }*/
     }
     IEnumerator PerformPlayerAttack()
     {
         state = BattleState.Busy;
-
-        // todo
-        // 1. 적은 선택 되어있음 current enemy
-        // 2. 스킬도 선택 되어있음 currentskill
-        // 3. run attack 발동
-
         yield return RunAttack(battleUnits[currentUnit], battleUnits.Where(x => x.unit == enemyUnits[currentEnemy]).FirstOrDefault(), battleUnits[currentUnit].unit.PhysicsAttack);
 
-        //state = BattleState.Busy;
-        //yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이 {enemyUnits[currentEnemy].Base.Name}을 공격.");
-        //yield return new WaitForSeconds(1f);
-
-        //enemyHud.unitHudElements[currentEnemy].PlayHitAnimaion();
-        //yield return new WaitForSeconds(1f);
-
-        //var damageDetails = enemyUnits[currentEnemy].TakeDamage(battleUnits[currentUnit].unit.PhysicsAttack, battleUnits[currentUnit]);
-        //yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {enemyUnits[currentEnemy].Base.Name}에게 {damageDetails.Damage}의 피해를 주었다. ");
-        //yield return enemyHud.unitHudElements[currentEnemy].UpdateHP();
-
-        //if(damageDetails.Fainted)
-        //{
-        //    enemyHud.unitHudElements[currentEnemy].PlayFaintedAnimation();
-        //    yield return battleDialog.TypeDialog($"{enemyUnits[currentEnemy].Base.Name}이(가) 쓰러졌다!");
-        //}
-
-        //GotoNext();
     }
     IEnumerator EnemySkill()
     {
         state = BattleState.Busy;
-        // todo
-        // 적이 공격할 때
-        // 1. 아군 유닛 선택
-        // 2. 공격 스킬 선택 (일단은 0번 스킬로)
-        // 3. runattack 발동
-
-        
-
         var unit = battleUnits[currentUnit].unit.GetRandomUnit(playerParty.Units);
         var skill = battleUnits[currentUnit].unit.Skills[0];
 
         yield return RunAttack(battleUnits[currentUnit], battleUnits.Where(x => x.unit == playerParty.Units[unit]).FirstOrDefault(), skill);
-
-        /*yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이 {unit.Base.Name}을 공격.");
-        yield return new WaitForSeconds(1f);
-
-        enemyHud.unitHudElements.Where(x => x.Unit == battleUnits[currentUnit]).FirstOrDefault().PlayAttackAnimation();
-        var damageDetails = unit.TakeDamage(battleUnits[currentUnit].Skills[0], battleUnits[currentUnit]);
-        yield return playerHud.unitHudElements.Where(x => x.Unit == unit).FirstOrDefault().UpdateHP();
-        yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].Base.Name}이(가) {unit.Base.Name}에게 {damageDetails.Damage}의 피해를 주었다. ");
-
-        yield return new WaitForSeconds(1f);
-
-        if(damageDetails.Fainted)
-        {
-            yield return battleDialog.TypeDialog($"{unit.Base.Name}이(가) 쓰러졌다!");
-        }
-
-        GotoNext();*/
-
     }
 
     IEnumerator RunAttack(BattleUnit sourceUnit, BattleUnit targetUnit, Skill skill)
     {
         state = BattleState.Busy;
-
-
-        yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetUnit.unit.Base.Name}에게 {skill.Base.Name}을(를) 사용.");
-
+        yield return battleDialog.TypeDialog("");
         sourceUnit.unit.energy -= skill.PP;
         yield return sourceUnit.Hud.UpdateHP();
-        // attack animation
-        // hit animation
-
-        if (sourceUnit.unit.Base.IsEnemy)
-            sourceUnit.Hud.PlayAttackAnimation();
-        yield return new WaitForSeconds(1f);
-        targetUnit.Hud.PlayHitAnimaion();
-
         if (skill.Base.SkillCategoty == SkillCategory.버프)
         {
             yield return RunSkillEffects(skill, sourceUnit.unit, targetUnit.unit);
         }
         else
         {
+            yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetUnit.unit.Base.Name}에게 {skill.Base.Name}을(를) 사용.");
+            if (sourceUnit.unit.Base.IsEnemy)
+                sourceUnit.Hud.PlayAttackAnimation();
+            yield return new WaitForSeconds(1f);
+            targetUnit.Hud.PlayHitAnimaion();
+
             var damageDetails = targetUnit.unit.TakeDamage(skill, sourceUnit.unit);
             yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetUnit.unit.Base.Name}에게 {damageDetails.Damage}의 피해를 입혔다. ");
             yield return targetUnit.Hud.UpdateHP();
@@ -305,14 +222,15 @@ public class BattleSystem : MonoBehaviour
         {
             if(skill.Base.SkillTarget == SkillTarget.자신)
             {
+                yield return battleDialog.TypeDialog($"{source.Base.Name}이(가) 자신에게 {skill.Base.Name}을(를) 사용.");
                 source.ApplyBoosts(effects.Boosts);
             }
             else
             {
+                yield return battleDialog.TypeDialog($"{source.Base.Name}이(가) {target.Base.Name}에게 {skill.Base.Name}을(를) 사용.");
                 target.ApplyBoosts(effects.Boosts);
             }
         }
-
         yield return ShowStatusChanges(source);
         yield return ShowStatusChanges(target);
     }
@@ -419,36 +337,38 @@ public class BattleSystem : MonoBehaviour
 
     private void HandleSkillSelection()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Input.GetKeyDown(KeyCode.DownArrow))
         {
-                ++currentSkill;
-        }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-                --currentSkill;
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-                currentSkill += 2;
+            currentSkill += 1;
 
         }
         else if (Input.GetKeyDown(KeyCode.UpArrow))
         {
-                currentSkill -= 2;
+            currentSkill -= 1;
         }
         currentSkill = Mathf.Clamp(currentSkill, 0, battleUnits[currentUnit].unit.Skills.Count - 2);
 
-        battleDialog.UpdateSkillSelection(currentSkill, battleUnits[currentUnit].unit.Skills[currentSkill]);
+        //battleDialog.UpdateSkillSelection(currentSkill, battleUnits[currentUnit].unit.Skills[currentSkill]);
+
+        battleDialog.UpdateSkillSelection2(currentSkill, battleUnits[currentUnit].unit.Skills[currentSkill]);
 
         if (Input.GetKeyDown(KeyCode.Z))
         {
             if (battleUnits[currentUnit].unit.energy < battleUnits[currentUnit].unit.Skills[currentSkill].PP) return;
-            battleDialog.EnableSkillSelector(false);
+            //battleDialog.EnableSkillSelector(false);
+            battleDialog.EnableSkillInfo(false);
+            if (battleUnits[currentUnit].unit.Skills[currentSkill].Base.SkillTarget == SkillTarget.자신)
+            {
+                currentEnemy = 0;
+                StartCoroutine(PerformPlayerSkill());
+                return;
+            }
             EnemySelect();
         }
         else if (Input.GetKeyDown(KeyCode.X))
         {
-            battleDialog.EnableSkillSelector(false);
+            //battleDialog.EnableSkillSelector(false);
+            battleDialog.EnableSkillInfo(false);
             PlayerAction();
         }
     }

@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: -171180247
   m_SortingLayer: 4
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 7a0e58ecafbd3f24c8186b073b7b4495, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 786b56cd5dd577045a1b193bce998fc0, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -165,13 +165,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkDownSprites:
-  - {fileID: 21300000, guid: e41fde55135512f42af99a0ed7afa36e, type: 3}
+  - {fileID: 21300000, guid: 786b56cd5dd577045a1b193bce998fc0, type: 3}
   walkUpSprites:
-  - {fileID: 21300000, guid: dad2fb7a11a47df4cb7606d5791b2ae9, type: 3}
+  - {fileID: 21300000, guid: b4249d3b6ddf2564bbfad513c59884df, type: 3}
   walkRightSprites:
-  - {fileID: 21300000, guid: e93ae14b72c40e044b245d86862466f1, type: 3}
+  - {fileID: 21300000, guid: d2548770c61efa844be02766ab9f96d2, type: 3}
   walkLeftSprites:
-  - {fileID: 21300000, guid: 76a35c85b53bad8469c7ebe04ae0218e, type: 3}
+  - {fileID: 21300000, guid: cb3df4a6acbbca848941a796b71ad786, type: 3}
 --- !u!114 &925139377
 MonoBehaviour:
   m_ObjectHideFlags: 0
