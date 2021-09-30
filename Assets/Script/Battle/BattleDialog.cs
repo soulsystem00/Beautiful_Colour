@@ -22,6 +22,8 @@ public class BattleDialog : MonoBehaviour
 
     [SerializeField] EnemyInfo enemyInfo_details;
     [SerializeField] SkillInfo skillInfo_Details;
+
+    private int prevSkill;
     
     public IEnumerator TypeDialog(string dialog)
     {
@@ -67,27 +69,6 @@ public class BattleDialog : MonoBehaviour
         enemyInfo_details.Name.text = unit.Base.name;
         enemyInfo_details.HP.text = $"{unit.HP} / {unit.MaxHp}";
         enemyInfo_details.HpBar.transform.localScale = new Vector3((float)unit.HP / unit.MaxHp, 1f, 1f);
-
-        //ppText.text = $"PP {move.PP}/{move.Base.PP}";
-        //typeText.text = move.Base.Type.ToString();
-    }
-    public void UpdateSkillSelection(int selectedSkill, Skill skill)
-    {
-        for (int i = 0; i < skillTexts.Count - 1; i++)
-        {
-            if (i == selectedSkill)
-            {
-                skillTexts[i].color = highlightedColor;
-            }
-            else
-            {
-                skillTexts[i].color = Color.black;
-            }
-        }
-        skillDetailText[0].text = skill.Base.Power.ToString();
-        skillDetailText[1].text = $"마나 소모량 {skill.PP}";
-        //ppText.text = $"PP {move.PP}/{move.Base.PP}";
-        //typeText.text = move.Base.Type.ToString();
     }
     public void UpdateSkillSelection2(int selectedSkill, Skill skill)
     {
@@ -96,7 +77,7 @@ public class BattleDialog : MonoBehaviour
             if (i == selectedSkill)
             {
                 skillInfo_Details.Texts[i].color = highlightedColor;
-                skillInfo_Details.Scroll.value = 1 - (float)i / 3;
+                //skillInfo_Details.Scroll.value = 1 - (float)i / 3;
             }
             else
             {
@@ -104,7 +85,9 @@ public class BattleDialog : MonoBehaviour
             }
         }
         skillInfo_Details.DescriptionText.text = skill.Base.Description;
-
+        if(prevSkill != selectedSkill)
+            skillInfo_Details.UpdateScrollSmooth(1 - (float)selectedSkill / 3);
+        prevSkill = selectedSkill;
     }
 
     public void EnableDialogText(bool enabled)
@@ -147,32 +130,20 @@ public class BattleDialog : MonoBehaviour
             }
         }
     }
-    public void SetSkillNames(List<Skill> skills)
-    {
-        for (int i = 0; i < skillTexts.Count; i++)
-        {
-            if (i < skills.Count - 1)
-            {
-                skillTexts[i].text = skills[i].Base.Name;
-            }
-            else
-            {
-                skillTexts[i].text = "-";
-            }
-        }
-    }
-    public void SetSkillNames2(List<Skill> skills)
+    public void SetSkillNames2(List<Skill> skills, Unit unit)
     {
         for (int i = 0; i < skillInfo_Details.Texts.Count; i++)
         {
             if (i < skills.Count - 1)
             {
-                skillInfo_Details.Texts[i].text = skills[i].Base.Name;
+                skillInfo_Details.Texts[i].text = ($"{skills[i].Base.Name}  {skills[i].PP}");
             }
             else
             {
                 skillInfo_Details.Texts[i].text = "-";
             }
         }
+        skillInfo_Details.SpText.text = $"남은 기 : {unit.energy}";
+        skillInfo_Details.SpBar.transform.localScale = new Vector3(((float)unit.energy / unit.MaxEnergy), 1f, 1f);
     }
 }

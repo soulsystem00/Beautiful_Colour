@@ -119,7 +119,7 @@ public class BattleSystem : MonoBehaviour
         StartCoroutine(battleDialog.TypeDialog("어떤 행동을 취할 것인가?"));
         battleDialog.EnableActionSelector(true);
         //battleDialog.SetSkillNames(battleUnits[currentUnit].unit.Skills);
-        battleDialog.SetSkillNames2(battleUnits[currentUnit].unit.Skills);
+        battleDialog.SetSkillNames2(battleUnits[currentUnit].unit.Skills, battleUnits[currentUnit].unit);
     }
     void PlayerDefanse()
     {
@@ -199,10 +199,7 @@ public class BattleSystem : MonoBehaviour
         state = BattleState.Busy;
         yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {enemyUnits[currentEnemy].Base.Name}에게 일반 공격을 사용.");
 
-        // attack animation
-        // hit animation
         targetUnit.Hud.PlayHitAnimaion();
-        //enemyHud.unitHudElements[currentEnemy].PlayHitAnimaion();
         yield return new WaitForSeconds(1f);
 
         var damageDetails = targetUnit.unit.TakeDamage(damage, sourceUnit.unit);
