@@ -28,6 +28,7 @@ MonoBehaviour:
   maxHp: 200
   energy: 80
   maxEnergy: 80
+  isEnemy: 0
   physicsAttack_Inc: 1
   magicalAttack_Inc: 4
   physicsDefence_Inc: 2
@@ -41,5 +42,11 @@ MonoBehaviour:
     level: 1
   - skillBase: {fileID: 11400000, guid: 32cf9c606a50b2644b2bfef04b6ecd0d, type: 2}
     level: 2
+  - skillBase: {fileID: 11400000, guid: a4ff8a21a8863b94286bb544ed7e6edd, type: 2}
+    level: 3
+  - skillBase: {fileID: 11400000, guid: a4ff8a21a8863b94286bb544ed7e6edd, type: 2}
+    level: 3
+  - skillBase: {fileID: 11400000, guid: a4ff8a21a8863b94286bb544ed7e6edd, type: 2}
+    level: 3
   - skillBase: {fileID: 11400000, guid: a4ff8a21a8863b94286bb544ed7e6edd, type: 2}
     level: 3

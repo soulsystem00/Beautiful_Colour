@@ -10,11 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 038b58106e641244091672f829aad2a8, type: 3}
-  m_Name: tmpSkill4
+  m_Name: I_001
   m_EditorClassIdentifier: 
-  name: tmpSkill4
+  name: 
   description: 
-  type: 1
-  power: 11
-  accuracy: 10
-  pp: 20
+  type: 0
+  power: 0
+  accuracy: 0
+  pp: 0
+  skillCategoty: 0
+  effects:
+    boosts: []
+  skillTarget: 0
