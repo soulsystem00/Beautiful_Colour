@@ -10,6 +10,6 @@ public class Skill
     public Skill(SkillBase skillBase)
     {
         Base = skillBase;
-        PP = skillBase.PP;
+        PP = skillBase.Energy;
     }
 }

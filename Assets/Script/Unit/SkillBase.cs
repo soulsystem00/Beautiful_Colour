@@ -13,7 +13,7 @@ public class SkillBase : ScriptableObject
     [SerializeField] UnitType type;
     [SerializeField] int power;
     [SerializeField] int accuracy;
-    [SerializeField] int pp;
+    [SerializeField] int energy;
     [SerializeField] SkillCategory skillCategoty;
     [SerializeField] SkillEffects effects;
     [SerializeField] SkillTarget skillTarget;
@@ -22,7 +22,7 @@ public class SkillBase : ScriptableObject
     public UnitType Type { get => type; }
     public int Power { get => power; }
     public int Accuracy { get => accuracy; }
-    public int PP { get => pp; }
+    public int Energy { get => energy; }
     public bool IsSpecial
     {
         get
