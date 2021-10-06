@@ -12,13 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 038b58106e641244091672f829aad2a8, type: 3}
   m_Name: "\uAD11\uC5ED\uC2A4\uD0AC"
   m_EditorClassIdentifier: 
-  name: 
+  name: "\uAD11\uC5ED\uC2A4\uD0AC"
   description: 
   type: 0
-  power: 0
-  accuracy: 0
-  energy: 0
-  skillCategoty: 0
+  power: 10
+  accuracy: 10
+  energy: 10
+  skillCategoty: 1
   effects:
     boosts: []
-  skillTarget: 0
+  skillTarget: 2

@@ -37,4 +37,6 @@ MonoBehaviour:
   evasion_Inc: 1
   maxHp_Inc: 1
   maxEnergy_Inc: 1
-  learnableSkills: []
+  learnableSkills:
+  - skillBase: {fileID: 11400000, guid: 8d36a419c10eecb458c9bb598479408a, type: 2}
+    level: 0
