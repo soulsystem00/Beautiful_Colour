@@ -29,6 +29,8 @@ public class BattleSystem : MonoBehaviour
     List<Unit> enemyUnits;
     //List<Unit> battleUnits = new List<Unit>();
     List<BattleUnit> battleUnits = new List<BattleUnit>();
+    List<BattleUnit> playerBattleUnits = new List<BattleUnit>();
+    List<BattleUnit> enemyBattleUnits = new List<BattleUnit>();
     // Start is called before the first frame update
     public void StartBattle(UnitParty playerParty, List<Unit> enemyUnits)
     {
@@ -51,7 +53,9 @@ public class BattleSystem : MonoBehaviour
             if(i < playerParty.Units.Count)
             {
                 //playerHud.unitHudElements[i].SetData(playerParty.Units[i]);
-                battleUnits.Add(new BattleUnit(playerParty.Units[i], playerHud.unitHudElements[i]));
+                var unit = new BattleUnit(playerParty.Units[i], playerHud.unitHudElements[i]);
+                battleUnits.Add(unit);
+                playerBattleUnits.Add(unit);
             }
             else
             {
@@ -64,7 +68,9 @@ public class BattleSystem : MonoBehaviour
             if(i < enemyUnits.Count)
             {
                 //enemyHud.unitHudElements[i].SetData(enemyUnits[i]);
-                battleUnits.Add(new BattleUnit(enemyUnits[i], enemyHud.unitHudElements[i]));
+                var unit = new BattleUnit(enemyUnits[i], enemyHud.unitHudElements[i]);
+                battleUnits.Add(unit);
+                enemyBattleUnits.Add(unit);
             }
             else
             {
@@ -151,6 +157,11 @@ public class BattleSystem : MonoBehaviour
         yield return RunAttack(battleUnits[currentUnit], battleUnits.Where(x => x.unit == enemyUnits[currentEnemy]).FirstOrDefault(), battleUnits[currentUnit].unit.Skills[currentSkill]);
 
     }
+    IEnumerator PerformPlayerWideSkill(List<BattleUnit> units)
+    {
+        state = BattleState.Busy;
+        yield return RunAttack(battleUnits[currentUnit], units, battleUnits[currentUnit].unit.Skills[currentSkill]);
+    }
     IEnumerator PerformPlayerAttack()
     {
         state = BattleState.Busy;
@@ -163,34 +174,86 @@ public class BattleSystem : MonoBehaviour
         var unit = battleUnits[currentUnit].unit.GetRandomUnit(playerParty.Units);
         var skill = battleUnits[currentUnit].unit.Skills[0];
 
-        yield return RunAttack(battleUnits[currentUnit], battleUnits.Where(x => x.unit == playerParty.Units[unit]).FirstOrDefault(), skill);
-    }
-
-    IEnumerator RunAttack(BattleUnit sourceUnit, BattleUnit targetUnit, Skill skill)
-    {
-        state = BattleState.Busy;
-        yield return battleDialog.TypeDialog("");
-        sourceUnit.unit.energy -= skill.PP;
-        yield return sourceUnit.Hud.UpdateHP();
-        if (skill.Base.SkillCategoty == SkillCategory.버프)
+        if(skill.Base.SkillTarget == SkillTarget.아군광역 || skill.Base.SkillTarget == SkillTarget.상대광역)
         {
-            yield return RunSkillEffects(skill, sourceUnit.unit, targetUnit.unit);
+            yield return RunAttack(battleUnits[currentUnit], playerBattleUnits, skill);
         }
         else
         {
+            yield return RunAttack(battleUnits[currentUnit], battleUnits.Where(x => x.unit == playerParty.Units[unit]).FirstOrDefault(), skill);
+        }
+        
+    }
+    IEnumerator RunAttack(BattleUnit sourceUnit, BattleUnit targetUnit, Skill skill)
+    {
+        state = BattleState.Busy;
+
+        if (skill.Base.SkillCategoty == SkillCategory.버프)
+        {
+            yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) 자신에게 {skill.Base.Name}을(를) 사용.");
+            sourceUnit.unit.energy -= skill.PP;
+            yield return sourceUnit.Hud.UpdateHP();
+            yield return RunSkillEffects(skill, sourceUnit.unit, targetUnit.unit);
+        }
+        else if(skill.Base.SkillCategoty == SkillCategory.물리공격 || skill.Base.SkillCategoty == SkillCategory.마법공격)
+        {
             yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetUnit.unit.Base.Name}에게 {skill.Base.Name}을(를) 사용.");
+            sourceUnit.unit.energy -= skill.PP;
+            yield return sourceUnit.Hud.UpdateHP();
             if (sourceUnit.unit.Base.IsEnemy)
                 sourceUnit.Hud.PlayAttackAnimation();
             yield return new WaitForSeconds(1f);
             targetUnit.Hud.PlayHitAnimaion();
 
             var damageDetails = targetUnit.unit.TakeDamage(skill, sourceUnit.unit);
-            yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetUnit.unit.Base.Name}에게 {damageDetails.Damage}의 피해를 입혔다. ");
+            yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetUnit.unit.Base.Name}에게 {damageDetails.Damage}의 피해를 입혔다.");
             yield return targetUnit.Hud.UpdateHP();
         }
         if (targetUnit.unit.HP <= 0)
         {
             yield return battleDialog.TypeDialog($"{targetUnit.unit.Base.Name}이(가) 쓰러졌다!");
+        }
+        GotoNext();
+    }
+    IEnumerator RunAttack(BattleUnit sourceUnit, List<BattleUnit> targetUnits, Skill skill)
+    {
+        state = BattleState.Busy;
+
+        if (skill.Base.SkillCategoty == SkillCategory.버프)
+        {
+            foreach(var targetUnit in targetUnits)
+            {
+                string targetStr = (skill.Base.SkillTarget == SkillTarget.상대광역) ? "적군" : "아군";
+                yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetStr}에게 {skill.Base.Name}을(를) 사용.");
+                sourceUnit.unit.energy -= skill.PP;
+                yield return sourceUnit.Hud.UpdateHP();
+                yield return RunSkillEffects(skill, sourceUnit.unit, targetUnit.unit);
+            }
+        }
+        else if (skill.Base.SkillCategoty == SkillCategory.물리공격 || skill.Base.SkillCategoty == SkillCategory.마법공격)
+        {
+            string targetStr = (skill.Base.SkillTarget == SkillTarget.상대광역) ? "적군" : "아군";
+            yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetStr}에게 {skill.Base.Name}을(를) 사용.");
+            sourceUnit.unit.energy -= skill.PP;
+            yield return sourceUnit.Hud.UpdateHP();
+
+            if (sourceUnit.unit.Base.IsEnemy)
+                sourceUnit.Hud.PlayAttackAnimation();
+
+            DamageDetails damageDetails = new DamageDetails();
+            foreach (var targetUnit in targetUnits)
+            {
+                yield return new WaitForEndOfFrame();
+                targetUnit.Hud.PlayHitAnimaion();
+                damageDetails = targetUnit.unit.TakeDamage(skill, sourceUnit.unit);
+                
+                yield return targetUnit.Hud.UpdateHP();
+
+                if (targetUnit.unit.HP <= 0)
+                {
+                    yield return battleDialog.TypeDialog($"{targetUnit.unit.Base.Name}이(가) 쓰러졌다!");
+                }
+            }
         }
         GotoNext();
     }
@@ -245,6 +308,15 @@ public class BattleSystem : MonoBehaviour
         yield return battleDialog.TypeDialog($"{battleUnits[currentUnit].unit.Base.Name}의 방어력 증가");
         yield return RunSkillEffects(battleUnits[currentUnit].unit.Skills[battleUnits[currentUnit].unit.Skills.Count - 1], battleUnits[currentUnit].unit, battleUnits[currentUnit].unit);
         GotoNext();
+    }
+    IEnumerator ShowEnemyDeadMsg()
+    {
+        battleDialog.EnableEnemySelector(false);
+        battleDialog.EnableEnemyInfo(false);
+        battleDialog.EnableDialogText(true);
+        yield return battleDialog.TypeDialog("해당 유닛은 이미 처치했습니다.");
+        UnityEngine.Debug.Log("해당 유닛은 이미 처치했습니다.");
+        EnemySelect();
     }
     void GotoNext()
     {
@@ -360,6 +432,12 @@ public class BattleSystem : MonoBehaviour
                 StartCoroutine(PerformPlayerSkill());
                 return;
             }
+            else if(battleUnits[currentUnit].unit.Skills[currentSkill].Base.SkillTarget == SkillTarget.아군광역 || battleUnits[currentUnit].unit.Skills[currentSkill].Base.SkillTarget == SkillTarget.상대광역)
+            {
+                currentEnemy = 0;
+                StartCoroutine(PerformPlayerWideSkill(enemyBattleUnits));
+                return;
+            }
             EnemySelect();
         }
         else if (Input.GetKeyDown(KeyCode.X))
@@ -408,8 +486,7 @@ public class BattleSystem : MonoBehaviour
         }
         if(Input.GetKeyDown(KeyCode.Z) && enemyUnits[currentEnemy].HP <= 0)
         {
-            UnityEngine.Debug.Log("해당 유닛은 이미 처치했습니다.");
-            EnemySelect();
+            StartCoroutine(ShowEnemyDeadMsg());
         }
         if(Input.GetKeyDown(KeyCode.X) && currentAction == 0)
         {

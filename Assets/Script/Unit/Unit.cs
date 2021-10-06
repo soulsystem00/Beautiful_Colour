@@ -152,8 +152,6 @@ public class Unit
     //{
     //    get { return Base.Energy + (Level * Base.MaxEnergy_Inc); }
     //}
-
-
     public DamageDetails TakeDamage(Skill skill, Unit attacker)
     {
         var damagedatails = new DamageDetails()
@@ -163,13 +161,14 @@ public class Unit
             TypeEffectiveness = 1f,
             Damage = 0
         };
+        int damage = 0;
+        if (skill.Base.SkillCategoty == SkillCategory.물리공격)
+            damage = Mathf.CeilToInt(skill.Base.Power + attacker.PhysicsAttack - this.PhysicsDefense / 2);
+        else if(skill.Base.SkillCategoty == SkillCategory.마법공격)
+            damage = Mathf.CeilToInt(skill.Base.Power + attacker.MagicalAttack - this.MagicalDefense / 2);
 
-        int cal_Val = skill.Base.Power - this.MagicalDefense;
-
-        if (cal_Val <= 0)
-            cal_Val = 1;
-
-        int damage = 2 * cal_Val;
+        if (damage <= 5)
+            damage = 5;
 
         HP -= damage;
 
@@ -183,7 +182,6 @@ public class Unit
 
         return damagedatails;
     }
-
     public DamageDetails TakeDamage(int Attack, Unit attacker)
     {
         var damagedatails = new DamageDetails()
@@ -212,7 +210,6 @@ public class Unit
 
         return damagedatails;
     }
-
     public int GetRandomUnit(List<Unit> units)
     {
         int r = UnityEngine.Random.Range(0, units.Count);

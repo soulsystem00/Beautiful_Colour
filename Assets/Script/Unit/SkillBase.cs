@@ -51,9 +51,9 @@ public class StatBoost
 }
 public enum SkillCategory
 {
-    일반공격, 특수공격, 버프
+    일반공격, 물리공격, 마법공격, 버프
 }
 public enum SkillTarget
 {
-    상대, 자신
+    상대, 자신, 상대광역, 아군광역
 }
