@@ -15,7 +15,7 @@ public class ImaeColour : MonoBehaviour, Interactable
     }
     public void DisableObj()
     {
-        Debug.Log("imea start");
+        //Debug.Log($"{this.name}");
         StartCoroutine(Fade(GetComponent<Tilemap>()));
     }
     IEnumerator Fade(Tilemap tilemap)
