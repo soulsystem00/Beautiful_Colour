@@ -55,5 +55,5 @@ public enum SkillCategory
 }
 public enum SkillTarget
 {
-    상대, 자신, 상대광역, 아군광역
+    자신, 상대, 상대광역, 아군광역
 }
