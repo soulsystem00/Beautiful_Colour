@@ -432,10 +432,16 @@ public class BattleSystem : MonoBehaviour
                 StartCoroutine(PerformPlayerSkill());
                 return;
             }
-            else if(battleUnits[currentUnit].unit.Skills[currentSkill].Base.SkillTarget == SkillTarget.아군광역 || battleUnits[currentUnit].unit.Skills[currentSkill].Base.SkillTarget == SkillTarget.상대광역)
+            else if(battleUnits[currentUnit].unit.Skills[currentSkill].Base.SkillTarget == SkillTarget.상대광역)
             {
                 currentEnemy = 0;
                 StartCoroutine(PerformPlayerWideSkill(enemyBattleUnits));
+                return;
+            }
+            else if(battleUnits[currentUnit].unit.Skills[currentSkill].Base.SkillTarget == SkillTarget.아군광역)
+            {
+                currentEnemy = 0;
+                StartCoroutine(PerformPlayerWideSkill(playerBattleUnits));
                 return;
             }
             EnemySelect();
