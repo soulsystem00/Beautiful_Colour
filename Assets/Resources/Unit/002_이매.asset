@@ -38,15 +38,25 @@ MonoBehaviour:
   maxHp_Inc: 20
   maxEnergy_Inc: 20
   learnableSkills:
-  - skillBase: {fileID: 11400000, guid: 8d36a419c10eecb458c9bb598479408a, type: 2}
-    level: 1
-  - skillBase: {fileID: 11400000, guid: b216dcb1bee6f664aa8d9c3d5002ff2f, type: 2}
-    level: 2
-  - skillBase: {fileID: 11400000, guid: b216dcb1bee6f664aa8d9c3d5002ff2f, type: 2}
-    level: 3
-  - skillBase: {fileID: 11400000, guid: b216dcb1bee6f664aa8d9c3d5002ff2f, type: 2}
-    level: 3
-  - skillBase: {fileID: 11400000, guid: b216dcb1bee6f664aa8d9c3d5002ff2f, type: 2}
-    level: 3
-  - skillBase: {fileID: 11400000, guid: 43509901d4d5f664e87c339d67031280, type: 2}
-    level: 3
+  - skillBase: {fileID: 11400000, guid: 9dbdbab66ef05ab498f84c49887cec5b, type: 2}
+    level: 5
+  - skillBase: {fileID: 11400000, guid: 70616b64f8c50df4e809f8dfd4e84f93, type: 2}
+    level: 7
+  - skillBase: {fileID: 11400000, guid: 15bfe5499c3a3d14f9263859bb88232f, type: 2}
+    level: 10
+  - skillBase: {fileID: 11400000, guid: 2650fba048f126e4981b060e67bc1bff, type: 2}
+    level: 13
+  - skillBase: {fileID: 11400000, guid: de8dce25218369f4c83bb236e51c15df, type: 2}
+    level: 16
+  - skillBase: {fileID: 11400000, guid: 45f60b767e8604743ba0e8218a825794, type: 2}
+    level: 20
+  - skillBase: {fileID: 11400000, guid: 36929c4ab493a974c8568af772408f12, type: 2}
+    level: 23
+  - skillBase: {fileID: 11400000, guid: e140ed5711416904eb8fd2c1d60f27a9, type: 2}
+    level: 25
+  - skillBase: {fileID: 11400000, guid: 63f1d17551980c24bbc0ef66b0724cc8, type: 2}
+    level: 30
+  - skillBase: {fileID: 11400000, guid: aba3f560d55337947bc78469844167b6, type: 2}
+    level: 32
+  - skillBase: {fileID: 11400000, guid: ba1d17d25653cf849af06575b9189035, type: 2}
+    level: 35
