@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3e5cdfb11264c444da85f80287c8b523, type: 3}
-  m_Name: "\uD654\uC774"
+  m_Name: "001_\uD654\uC774"
   m_EditorClassIdentifier: 
   name: "\uD654\uC774"
   description: 
@@ -42,9 +42,21 @@ MonoBehaviour:
     level: 5
   - skillBase: {fileID: 11400000, guid: fa30c480d16fa1d4585a0a9edeb108ba, type: 2}
     level: 7
-  - skillBase: {fileID: 11400000, guid: b777858bbf52a7444912ef915c7efa41, type: 2}
+  - skillBase: {fileID: 11400000, guid: a4ff8a21a8863b94286bb544ed7e6edd, type: 2}
     level: 10
-  - skillBase: {fileID: 11400000, guid: 5fdd7989e1dc9ba4d9b4fbeeb5acd37b, type: 2}
+  - skillBase: {fileID: 11400000, guid: b777858bbf52a7444912ef915c7efa41, type: 2}
     level: 13
-  - skillBase: {fileID: 11400000, guid: 43509901d4d5f664e87c339d67031280, type: 2}
+  - skillBase: {fileID: 11400000, guid: 5fdd7989e1dc9ba4d9b4fbeeb5acd37b, type: 2}
     level: 16
+  - skillBase: {fileID: 11400000, guid: 69427cc81e3145049b90b6244d022f8a, type: 2}
+    level: 20
+  - skillBase: {fileID: 11400000, guid: 649fa0e9ba98fff42ab4231dbaf2b69a, type: 2}
+    level: 23
+  - skillBase: {fileID: 11400000, guid: 5f19f7bf8c7af564e842c114fed231d7, type: 2}
+    level: 25
+  - skillBase: {fileID: 11400000, guid: f4cb1a6582ff3384ea93b8a5166fcaff, type: 2}
+    level: 30
+  - skillBase: {fileID: 11400000, guid: 6b0dc256aca410a4899ceff3c94298f1, type: 2}
+    level: 32
+  - skillBase: {fileID: 11400000, guid: 1bd5dc0434dad4947bd0d825fa9243bf, type: 2}
+    level: 35

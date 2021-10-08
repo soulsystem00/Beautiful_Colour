@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 038b58106e641244091672f829aad2a8, type: 3}
+  m_Name: Imae_003
+  m_EditorClassIdentifier: 
+  name: "\uB9DD\uB7C9(\u9B4D\u9B4E)"
+  description: "\uC774\uB9E4\uC758 \uAC80\uC740 \uC0C9\uCC44\uB294 \uC774\uB530\uAE08
+    \uAE30\uC774\uD560 \uC815\uB3C4\uB85C \uAE30\uBBFC\uD55C \uC6C0\uC9C1\uC784\uC744
+    \uBCF4\uC774\uAE30\uB3C4 \uD55C\uB2E4. \uC774 \uBAA8\uC2B5\uC744 \uC8FC\uBCC0
+    \uC0AC\uB78C\uB4E4\uC774 \uC804\uD558\uAE30\uB97C \uB9C8\uCE58 \uB9DD\uB7C9\uC774
+    \uB4E0 \uC0AC\uB78C\uCC98\uB7FC \uBCF4\uC778\uB2E4\uACE0 \uD558\uC600\uB2E4.\r\n\uC608\uCE21\uD560
+    \uC218 \uC5C6\uB294 \uC7AC\uBE60\uB978 \uCC38\uACA9\uC740 \uC21C\uC2DD\uAC04\uC5D0
+    \uC801\uC758 \uBAA9\uC744 \uAFF0\uB6AB\uB294\uB2E4. \uD654\uC774\uB294 \uC774
+    \uBAA8\uC2B5\uC744 \uBCF4\uACE0 \uAC71\uC815\uACFC \uADFC\uC2EC\uC774 \uC55E\uC11C\uB294
+    \uB4EF \uD558\uB2E4.\r\n\uAE30 30\uC744 \uC18C\uBAA8\uD558\uC5EC \uC801 \uD558\uB098\uC5D0\uAC8C
+    \uC704\uB825 130\uC758 \uBB3C\uB9AC \uACF5\uACA9\uC744 \uAC00\uD55C\uB2E4."
+  type: 1
+  power: 130
+  accuracy: 100
+  energy: 30
+  skillCategoty: 1
+  effects:
+    boosts: []
+  skillTarget: 1

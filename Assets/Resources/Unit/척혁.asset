@@ -18,7 +18,7 @@ MonoBehaviour:
   backSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
   portraitSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
   dialogSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
-  type1: 0
+  type1: 1
   physicsAttack: 17
   magicalAttack: 6
   physicsDefence: 22

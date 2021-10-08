@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 038b58106e641244091672f829aad2a8, type: 3}
+  m_Name: Hwai_011
+  m_EditorClassIdentifier: 
+  name: "\uC11C\uCC9C\uC744 \uB118\uB294 \uAF43"
+  description: "\uC8FD\uC74C\uC744 \uB118\uC5B4\uC11C\uB77C\uB3C4 \uB108\uC640 \uD568\uAED8\uD558\uAE30\uB97C
+    \uAC01\uC624\uD588\uB2E4.\r\n\uC774 \uAC01\uC624\uB294 \uAEBE\uC774\uC9C0 \uC54A\uB294
+    \uB9F9\uC138, \uC5B4\uB5A4 \uBC14\uB78C\uC774 \uBD88\uC5B4\uB3C4 \uADF8\uB298\uC744
+    \uB118\uC5B4 \uC800 \uB108\uBA38\uB85C \uB0A0\uC544\uAC00\uB9AC\uB77C.\r\n\uAE30
+    50\uC744 \uC18C\uBAA8\uD558\uC5EC 2\uCC28\uB840 \uB3D9\uC548 \uC544\uAD70 \uC804\uCCB4\uC758
+    \uBC29\uC5B4\uB825\uC744 160 \uC99D\uAC00\uC2DC\uD0A8\uB2E4."
+  type: 1
+  power: 0
+  accuracy: 100
+  energy: 50
+  skillCategoty: 3
+  effects:
+    boosts:
+    - stat: 2
+      boost: 2
+      turn: 120
+  skillTarget: 3

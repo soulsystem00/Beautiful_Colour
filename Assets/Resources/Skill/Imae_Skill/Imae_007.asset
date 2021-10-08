@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 038b58106e641244091672f829aad2a8, type: 3}
+  m_Name: Imae_007
+  m_EditorClassIdentifier: 
+  name: "\uC2A4\uB7EC\uC9C0\uB294 \uC774\uC2AC"
+  description: "\uC544\uCE68\uC5D0 \uB9FA\uD78C \uC774\uC2AC\uC740 \uBE5B\uC744 \uBA38\uAE08\uC73C\uBA74
+    \uCC2C\uCC2C\uD788 \uC2A4\uB7EC\uC9C4\uB2E4. \uD0C4\uC0DD\uACFC \uC8FD\uC74C
+    \uC0AC\uC774\uC5D0 \uC788\uB294 \uC544\uC8FC \uC9E7\uC740 \uC21C\uAC04.\r\n\uC774\uB9E4\uB294
+    \uADF8 \uC21C\uAC04\uC5D0 \uB9CE\uC740 \uC0DD\uAC01\uC744 \uD55C\uB2E4. \uACE0\uB1CC
+    \uC0AC\uC774\uB85C \uD758\uB7EC\uB098\uC624\uB294 \uAC80\uC740 \uC0C9\uCC44\uB294
+    \uADF8\uC758 \uAC80\uC744 \uC608\uB9AC\uD558\uAC8C \uB9CC\uB4E0\uB2E4.\r\n\uAE30
+    30\uC744 \uC18C\uBAA8\uD558\uC5EC \uB2E4\uC74C 1\uCC28\uB840 \uB3D9\uC548 \uC774\uB9E4\uC758
+    \uACF5\uACA9\uB825\uC744 70 \uC0C1\uC2B9\uC2DC\uD0A8\uB2E4."
+  type: 1
+  power: 0
+  accuracy: 100
+  energy: 30
+  skillCategoty: 3
+  effects:
+    boosts:
+    - stat: 0
+      boost: 1
+      turn: 70
+  skillTarget: 0
