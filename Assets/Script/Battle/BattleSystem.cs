@@ -174,9 +174,13 @@ public class BattleSystem : MonoBehaviour
         var unit = battleUnits[currentUnit].unit.GetRandomUnit(playerParty.Units);
         var skill = battleUnits[currentUnit].unit.Skills[0];
 
-        if(skill.Base.SkillTarget == SkillTarget.아군광역 || skill.Base.SkillTarget == SkillTarget.상대광역)
+        if(skill.Base.SkillTarget == SkillTarget.상대광역)
         {
             yield return RunAttack(battleUnits[currentUnit], playerBattleUnits, skill);
+        }
+        else if(skill.Base.SkillTarget == SkillTarget.아군광역)
+        {
+            yield return RunAttack(battleUnits[currentUnit], enemyBattleUnits, skill);
         }
         else
         {
