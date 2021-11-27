@@ -29,6 +29,8 @@ MonoBehaviour:
   energy: 30
   maxEnergy: 30
   isEnemy: 1
+  expYield: 1000
+  growthRate: 0
   physicsAttack_Inc: 1
   magicalAttack_Inc: 1
   physicsDefence_Inc: 1

@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: "\uD654\uC8FC"
   m_EditorClassIdentifier: 
   name: LEF
-  description: 
-  frontSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
+  description: "\uD654\uC8FC\uC785\uB2C8\uB2E4."
+  frontSprite: {fileID: 21300000, guid: 98fc1ef618c67284b9a32e9080e6e03f, type: 3}
   backSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
   portraitSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
   dialogSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
@@ -28,6 +28,9 @@ MonoBehaviour:
   maxHp: 100
   energy: 100
   maxEnergy: 100
+  isEnemy: 0
+  expYield: 60
+  growthRate: 0
   physicsAttack_Inc: 1
   magicalAttack_Inc: 6
   physicsDefence_Inc: 2

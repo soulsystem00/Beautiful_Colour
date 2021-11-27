@@ -10,6 +10,7 @@ public class UnitHudElement : MonoBehaviour
     [SerializeField] Text nameText;
     [SerializeField] HPBar hPBar;
     [SerializeField] HPBar spBar;
+    [SerializeField] GameObject expBar;
     [SerializeField] Image sprite;
     [SerializeField] bool isEnemy;
     Unit _unit;
@@ -33,6 +34,7 @@ public class UnitHudElement : MonoBehaviour
             nameText.text = Unit.Base.Name;
             hPBar.SetHP((float)Unit.HP / Unit.MaxHp);
             spBar.SetHP((float)Unit.energy / Unit.MaxEnergy);
+            SetExp();
         }
 
         SetSprite();
@@ -53,7 +55,32 @@ public class UnitHudElement : MonoBehaviour
 
         PlayerEnterAnimation();
     }
+    public void SetExp()
+    {
+        if (expBar == null) return;
 
+        float normalizedExp = GetNormalizedExp();
+        expBar.transform.localScale = new Vector3(normalizedExp, 1f, 1f);
+    }
+    public IEnumerator SetExpSmooth(bool reset = false)
+    {
+        if (expBar == null) yield break;
+
+        if(reset)
+            expBar.transform.localScale = new Vector3(0f, 1f, 1f);
+
+        float normalizedExp = GetNormalizedExp();
+        yield return expBar.transform.DOScaleX(normalizedExp, 1.5f).WaitForCompletion();
+    }
+    float GetNormalizedExp()
+    {
+        int curLevelExp = Unit.Base.GetExpForLevel(Unit.Level);
+        int nextLevelExp = Unit.Base.GetExpForLevel(Unit.Level + 1);
+
+        float normalizedExp = (float)(Unit.Exp - curLevelExp) / (nextLevelExp - curLevelExp);
+
+        return Mathf.Clamp01(normalizedExp);
+    }
     public IEnumerator UpdateHP()
     {
         if(isEnemy)

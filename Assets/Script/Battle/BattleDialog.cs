@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 public class BattleDialog : MonoBehaviour
 {
     [SerializeField] int letterPerSecond;
-    [SerializeField] Color highlightedColor;
+    Color highlightedColor;
     [SerializeField] Text dialogText;
 
     [SerializeField] GameObject actionSelector;
@@ -22,9 +23,12 @@ public class BattleDialog : MonoBehaviour
 
     [SerializeField] EnemyInfo enemyInfo_details;
     [SerializeField] SkillInfo skillInfo_Details;
-
+    public event Action ChangeState;
     private int prevSkill;
-    
+    private void Start()
+    {
+        highlightedColor = GlobalSettings.i.HighlightedColor;
+    }
     public IEnumerator TypeDialog(string dialog)
     {
         dialogText.text = "";
@@ -35,7 +39,17 @@ public class BattleDialog : MonoBehaviour
         }
         yield return new WaitForSeconds(1f);
     }
-
+    public IEnumerator TypeDialog2(string dialog)
+    {
+        dialogText.text = "";
+        foreach (var letter in dialog.ToCharArray())
+        {
+            dialogText.text += letter;
+            yield return new WaitForSeconds(1f / letterPerSecond);
+        }
+        yield return new WaitForSeconds(1f);
+        ChangeState.Invoke();
+    }
     public void UpdateActionSelection(int selectedAction)
     {
         for (int i = 0; i < actionTexts.Count; i++)
@@ -134,7 +148,7 @@ public class BattleDialog : MonoBehaviour
     {
         for (int i = 0; i < skillInfo_Details.Texts.Count; i++)
         {
-            if (i < skills.Count - 1)
+            if (i < skills.Count)
             {
                 skillInfo_Details.Texts[i].text = ($"{skills[i].Base.Name}  {skills[i].PP}");
             }

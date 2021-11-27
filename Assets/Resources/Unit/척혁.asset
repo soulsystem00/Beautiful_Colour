@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: "\uCC99\uD601"
   m_EditorClassIdentifier: 
   name: RIG
-  description: 
-  frontSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
+  description: "\uCC99\uD601\uC785\uB2C8\uB2E4."
+  frontSprite: {fileID: 21300000, guid: 00d3b3b0cac164343bb3b5d25b337dad, type: 3}
   backSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
   portraitSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
   dialogSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
@@ -29,6 +29,8 @@ MonoBehaviour:
   energy: 80
   maxEnergy: 80
   isEnemy: 0
+  expYield: 60
+  growthRate: 0
   physicsAttack_Inc: 1
   magicalAttack_Inc: 4
   physicsDefence_Inc: 2

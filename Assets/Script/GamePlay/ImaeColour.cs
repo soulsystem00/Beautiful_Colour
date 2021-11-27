@@ -11,7 +11,7 @@ public class ImaeColour : MonoBehaviour, Interactable
     [SerializeField] Dialog dialog;
     public void Interact(Transform initiator)
     {
-        StartCoroutine(DialogManager.Instance.ShowDialog(dialog, DisableObj, true));
+        StartCoroutine(DialogManager.Instance.ShowDialog(dialog, DisableObj, default, true));
     }
     public void DisableObj()
     {

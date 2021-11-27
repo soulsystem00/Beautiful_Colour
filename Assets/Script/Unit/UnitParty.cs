@@ -6,7 +6,7 @@ public class UnitParty : MonoBehaviour
 {
     [SerializeField] List<Unit> units;
 
-    public List<Unit> Units { get => units; }
+    public List<Unit> Units { get => units; set => units = value; }
 
 
     // Start is called before the first frame update

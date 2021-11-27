@@ -11,15 +11,22 @@ public class HwaiColour : MonoBehaviour, Interactable
     public ColourPair colourPair;
     public Transform spawnPoint;
     private Transform player;
+    Fader fader;
+    private void Start()
+    {
+        fader = FindObjectOfType<Fader>();
+    }
     public void Interact(Transform initiator)
     {
         player = initiator;
-        StartCoroutine(DialogManager.Instance.ShowDialog(dialog, teleport, true));
+        StartCoroutine(DialogManager.Instance.ShowDialog(dialog, default, teleport(), true));
     }
-    public void teleport()
+    IEnumerator teleport()
     {
+        yield return fader.FadeIn(0.5f);
         var obj = FindObjectsOfType<HwaiColour>().First(x => x != this && x.colourPair == this.colourPair);
         player.GetComponent<PlayerActions>().Character.SetPositionAndSnapToTile(obj.spawnPoint.position);
+        yield return fader.FadeOut(0.5f);
     }
 }
 public enum ColourPair

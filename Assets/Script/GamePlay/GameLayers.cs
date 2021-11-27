@@ -11,6 +11,7 @@ public class GameLayers : MonoBehaviour
     [SerializeField] LayerMask colour;
     [SerializeField] LayerMask colourDisable;
     [SerializeField] LayerMask portalLayer;
+    [SerializeField] LayerMask fovLayer;
     public static GameLayers i { get; set; }
     public LayerMask SolidObjectsLayer { get => solidObjectsLayer; }
     public LayerMask InteractableLayer { get => interactableLayer; }
@@ -20,6 +21,7 @@ public class GameLayers : MonoBehaviour
     public LayerMask ColourDiable { get => colourDisable; }
     public LayerMask PortalLayer { get => portalLayer; }
     public LayerMask TriggerableLayers { get => grassLayer | portalLayer; }
+    public LayerMask FovLayer { get => fovLayer; }
 
     private void Awake()
     {

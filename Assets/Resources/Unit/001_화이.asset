@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: "001_\uD654\uC774"
   m_EditorClassIdentifier: 
   name: "\uD654\uC774"
-  description: 
-  frontSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
+  description: "\uD654\uC774\uC785\uB2C8\uB2E4."
+  frontSprite: {fileID: 21300000, guid: 6f7ea9a1d8c8651469d02140763531a0, type: 3}
   backSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
   portraitSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
   dialogSprite: {fileID: -6077817283944774343, guid: 4cf7182e2ec9b3c4dbe4358e0912780f, type: 3}
@@ -29,6 +29,8 @@ MonoBehaviour:
   energy: 60
   maxEnergy: 60
   isEnemy: 0
+  expYield: 60
+  growthRate: 0
   physicsAttack_Inc: 3
   magicalAttack_Inc: 2
   physicsDefence_Inc: 6
@@ -43,11 +45,11 @@ MonoBehaviour:
   - skillBase: {fileID: 11400000, guid: fa30c480d16fa1d4585a0a9edeb108ba, type: 2}
     level: 7
   - skillBase: {fileID: 11400000, guid: a4ff8a21a8863b94286bb544ed7e6edd, type: 2}
-    level: 10
+    level: 9
   - skillBase: {fileID: 11400000, guid: b777858bbf52a7444912ef915c7efa41, type: 2}
-    level: 13
+    level: 10
   - skillBase: {fileID: 11400000, guid: 5fdd7989e1dc9ba4d9b4fbeeb5acd37b, type: 2}
-    level: 16
+    level: 11
   - skillBase: {fileID: 11400000, guid: 69427cc81e3145049b90b6244d022f8a, type: 2}
     level: 20
   - skillBase: {fileID: 11400000, guid: 649fa0e9ba98fff42ab4231dbaf2b69a, type: 2}

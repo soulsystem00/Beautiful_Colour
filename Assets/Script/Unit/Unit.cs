@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -10,6 +11,28 @@ public class Unit
     [SerializeField] UnitBase _base;
     [SerializeField] int level;
 
+    public Unit(UnitBase ubase, int uLevel)
+    {
+        _base = ubase;
+        level = uLevel;
+
+        init();
+    }
+    public Unit(UnitSaveData saveData)
+    {
+        _base = UnitDB.GetUnitByName(saveData.name);
+        HP = saveData.hp;
+        energy = saveData.energy;
+        level = saveData.level;
+        Exp = saveData.exp;
+
+        Skills = saveData.skills.Select(s => new Skill(s)).ToList();
+
+        CalculateStats();
+        ResetStatBoost();
+        StateChanges = new Queue<string>();
+    }
+    public int Exp { get; set; }
     public UnitBase Base { get => _base; }
     public int Level { get => level; }
     public int HP { get; set; }
@@ -18,21 +41,27 @@ public class Unit
     public Dictionary<Stat, int> Stats { get; private set; }
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     public Dictionary<Stat, Queue<BuffInfo>> BuffDic { get; private set; }
-    public Queue<string> StateChanges { get; private set; } = new Queue<string>();
+    public Queue<string> StateChanges { get; private set; }
     public void init()
     {
-
-
         Skills = new List<Skill>();
+        
         foreach (var skill in Base.LearnableSkills)
         {
             if (skill.Level <= this.Level)
             {
                 Skills.Add(new Skill(skill.Base));
             }
+            if(Skills.Count >= UnitBase.MaxNumOfSKills)
+            {
+                break;
+            }
         }
+        Exp = Base.GetExpForLevel(Level);
+
         CalculateStats();
         HP = MaxHp;
+        StateChanges = new Queue<string>();
         energy = MaxEnergy;
         ResetStatBoost();
     }
@@ -120,6 +149,27 @@ public class Unit
             else
                 StateChanges.Enqueue($"{Base.Name}의 {stat}이(가) {-boost}% 만큼 감소!");
         }
+    }
+    public bool CheckForLevelUp()
+    {
+        if(Exp > Base.GetExpForLevel(Level + 1))
+        {
+            level++;
+            return true;
+        }
+
+        return false;
+    }
+    public LearnableSkill GetLearnableSkillAtCurLevel()
+    {
+        return Base.LearnableSkills.Where(x => x.Level == level).FirstOrDefault();
+    }
+    public void LearnSkill(LearnableSkill newSkill)
+    {
+        if (Skills.Count > UnitBase.MaxNumOfSKills)
+            return;
+
+        Skills.Add(new Skill(newSkill.Base));
     }
     public int PhysicsAttack
     {
@@ -215,6 +265,20 @@ public class Unit
         int r = UnityEngine.Random.Range(0, units.Count);
         return r;
     }
+    public UnitSaveData GetSaveData()
+    {
+        var saveData = new UnitSaveData()
+        {
+            name = Base.Name,
+            hp = HP,
+            level = Level,
+            exp = Exp,
+            energy = energy,
+            skills = Skills.Select(x => x.GetSaveData()).ToList()
+        };
+
+        return saveData;
+    }
 }
 
 public class DamageDetails
@@ -234,4 +298,14 @@ public class BuffInfo
         this.Val = val;
         this.Turn = turn;
     }
+}
+[Serializable]
+public class UnitSaveData
+{
+    public string name;
+    public int hp;
+    public int energy;
+    public int level;
+    public int exp;
+    public List<SkillSaveData> skills;
 }

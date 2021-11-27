@@ -8,15 +8,13 @@ public class BattleUnit
 {
     [SerializeField] bool isEnemyUnit;
     [SerializeField] UnitHudElement hud;
+
     public Unit unit { get; set; }
     public UnitHudElement Hud { get => hud; }
+    public bool IsEnemyUnit { get => isEnemyUnit; }
 
     Vector3 originalPos;
     Color originalColor;
-    private void Awake()
-    {
-
-    }
     public void Setup(Unit unit, UnitHudElement unitHudElement)
     {
         this.unit = unit;

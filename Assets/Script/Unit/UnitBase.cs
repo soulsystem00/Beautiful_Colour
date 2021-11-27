@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using TMPro;
+using UnityEditor.UI;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Unit", menuName = "Unit/Create new Unit")]
@@ -31,6 +32,8 @@ public class UnitBase : ScriptableObject
     [SerializeField] int energy;
     [SerializeField] int maxEnergy;
     [SerializeField] bool isEnemy;
+    [SerializeField] int expYield;
+    [SerializeField] GrowthRate growthRate;
 
     [Header("레벨에 따른 증가량")]
     [SerializeField] int physicsAttack_Inc;
@@ -43,6 +46,9 @@ public class UnitBase : ScriptableObject
     [SerializeField] int maxEnergy_Inc;
 
     [SerializeField] List<LearnableSkill> learnableSkills;
+
+    public static int MaxNumOfSKills { get; set; } = 4;
+
     public string Name
     {
         get { return name; }
@@ -74,6 +80,22 @@ public class UnitBase : ScriptableObject
 
     public List<LearnableSkill> LearnableSkills { get => learnableSkills; }
     public bool IsEnemy { get => isEnemy; }
+    public int ExpYield { get => expYield; }
+    public GrowthRate GrowthRate { get => growthRate; }
+
+    public int GetExpForLevel(int level)
+    {
+        if(growthRate == GrowthRate.Fast)
+        {
+            return 4 * level * level * level / 5;
+        }
+        else if(growthRate == GrowthRate.MediumFast)
+        {
+            return level * level * level;
+        }
+
+        return -1;
+    }
 }
 public enum UnitType
 {
@@ -81,6 +103,10 @@ public enum UnitType
     인간,
     악귀,
     마왕
+}
+public enum GrowthRate
+{
+    Fast, MediumFast, 
 }
 public enum Stat
 {

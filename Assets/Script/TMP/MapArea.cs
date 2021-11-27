@@ -6,11 +6,17 @@ public class MapArea : MonoBehaviour
 {
     [SerializeField] List<Unit> wildUnits;
 
+    List<Unit> wildUnitsCopy;
     public List<Unit> GetWildUnit()
     {
+        wildUnitsCopy = new List<Unit>();
         foreach (var i in wildUnits)
-            i.init();
-        return wildUnits;
+        {
+            var wildUnitCopy = new Unit(i.Base, i.Level);
+            wildUnitCopy.init();
+            wildUnitsCopy.Add(wildUnitCopy);
+        }
+        return wildUnitsCopy;
     }
     // Start is called before the first frame update
     void Start()

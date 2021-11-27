@@ -172,6 +172,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: d2548770c61efa844be02766ab9f96d2, type: 3}
   walkLeftSprites:
   - {fileID: 21300000, guid: cb3df4a6acbbca848941a796b71ad786, type: 3}
+  defaultDirection: 1
 --- !u!114 &925139377
 MonoBehaviour:
   m_ObjectHideFlags: 0

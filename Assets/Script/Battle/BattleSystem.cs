@@ -4,10 +4,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 using System.Linq;
+using System.Threading.Tasks;
+using UnityEngine.Assertions.Must;
+using UnityEditor.Connect;
 
 public enum BattleState
 {
-    Start, PlayerAction, PlayerSkill, EnemySelect, EnemySkill, Busy, PlayerDefanse, BattleOver
+    Start, PlayerAction, PlayerSkill, EnemySelect, EnemySkill, Busy, PlayerDefanse, SkillToForget, BattleOver, 
 }
 
 public class BattleSystem : MonoBehaviour
@@ -16,28 +19,40 @@ public class BattleSystem : MonoBehaviour
 
     [SerializeField] UnitHud playerHud;
     [SerializeField] UnitHud enemyHud;
-
+    [SerializeField] SkillSelectionUI skillSelectionUI;
     public event Action<bool> OnBattleOver;
-
     BattleState state;
     int currentAction;
     public int currentSkill;
     int currentUnit;
     int currentEnemy;
+    bool isTrainerBattle = false;
+    PlayerActions player;
+    TrainerController trainer;
+
+    int escapeAttempts;
+    SkillBase skillToLearn;
+    Unit unitToLearn;
 
     UnitParty playerParty;
     List<Unit> enemyUnits;
     //List<Unit> battleUnits = new List<Unit>();
-    List<BattleUnit> battleUnits = new List<BattleUnit>();
-    List<BattleUnit> playerBattleUnits = new List<BattleUnit>();
-    List<BattleUnit> enemyBattleUnits = new List<BattleUnit>();
-    // Start is called before the first frame update
+    List<BattleUnit> battleUnits;
+    List<BattleUnit> playerBattleUnits;
+    List<BattleUnit> enemyBattleUnits;
+    private void Awake()
+    {
+        battleDialog.ChangeState += () =>
+        {
+            state = BattleState.PlayerAction;
+        };
+    }
     public void StartBattle(UnitParty playerParty, List<Unit> enemyUnits)
     {
         currentUnit = 0;
         this.playerParty = playerParty;
         this.enemyUnits = enemyUnits;
-
+        isTrainerBattle = false;
         //battleUnits.AddRange(enemyUnits);
         //battleUnits.AddRange(playerParty.Units);
 
@@ -45,14 +60,30 @@ public class BattleSystem : MonoBehaviour
 
         StartCoroutine(SetupBattle());
     }
+    public void StartTrainerBattle(UnitParty playerParty, UnitParty trainerParty)
+    {
+        currentUnit = 0;
+        this.playerParty = playerParty;
+        this.enemyUnits = trainerParty.Units;
+
+        isTrainerBattle = true;
+        player = playerParty.GetComponent<PlayerActions>();
+        trainer = trainerParty.GetComponent<TrainerController>();
+        StartCoroutine(SetupBattle());
+    }
 
     public IEnumerator SetupBattle()
     {
+        state = BattleState.Busy;
+        playerBattleUnits = new List<BattleUnit>();
+        enemyBattleUnits = new List<BattleUnit>();
+        battleUnits = new List<BattleUnit>();
         for (int i = 0; i < playerHud.unitHudElements.Count; i++)
         {
             if(i < playerParty.Units.Count)
             {
                 //playerHud.unitHudElements[i].SetData(playerParty.Units[i]);
+                playerHud.unitHudElements[i].gameObject.SetActive(true);
                 var unit = new BattleUnit(playerParty.Units[i], playerHud.unitHudElements[i]);
                 battleUnits.Add(unit);
                 playerBattleUnits.Add(unit);
@@ -68,6 +99,7 @@ public class BattleSystem : MonoBehaviour
             if(i < enemyUnits.Count)
             {
                 //enemyHud.unitHudElements[i].SetData(enemyUnits[i]);
+                enemyHud.unitHudElements[i].gameObject.SetActive(true);
                 var unit = new BattleUnit(enemyUnits[i], enemyHud.unitHudElements[i]);
                 battleUnits.Add(unit);
                 enemyBattleUnits.Add(unit);
@@ -81,8 +113,15 @@ public class BattleSystem : MonoBehaviour
         battleUnits = battleUnits.OrderByDescending(battleunit => battleunit.unit.Speed).ThenBy(battleunit => battleunit.unit.Base.IsEnemy).ToList();
         battleDialog.SetEnemyNames(enemyUnits);
 
-        yield return battleDialog.TypeDialog("정적을 갉아먹고 적이 나타났다.");
-
+        if(isTrainerBattle)
+        {
+            yield return battleDialog.TypeDialog($"{trainer.Name}이(가) 싸움을 걸어왔다!");
+        }
+        else
+        {
+            yield return battleDialog.TypeDialog("정적을 갉아먹고 적이 나타났다.");
+        }
+        escapeAttempts = 0;
         CheckEnemy();
     }
     void CheckEnemy()
@@ -118,11 +157,12 @@ public class BattleSystem : MonoBehaviour
     }
     void PlayerAction()
     {
+        state = BattleState.Busy;
         currentAction = 0;
         currentSkill = 0;
-        state = BattleState.PlayerAction;
+        
         battleDialog.EnableDialogText(true);
-        StartCoroutine(battleDialog.TypeDialog("어떤 행동을 취할 것인가?"));
+        StartCoroutine(battleDialog.TypeDialog2("어떤 행동을 취할 것인가?"));
         battleDialog.EnableActionSelector(true);
         //battleDialog.SetSkillNames(battleUnits[currentUnit].unit.Skills);
         battleDialog.SetSkillNames2(battleUnits[currentUnit].unit.Skills, battleUnits[currentUnit].unit);
@@ -150,7 +190,15 @@ public class BattleSystem : MonoBehaviour
         battleDialog.EnableEnemyInfo(true);
         battleDialog.EnableDialogText(false);
     }
-
+    IEnumerator ChooseSkillToForget(Unit unit, SkillBase newSkill)
+    {
+        state = BattleState.Busy;
+        yield return battleDialog.TypeDialog($"없애고 싶은 색채 스킬을 선택하세요.");
+        skillSelectionUI.gameObject.SetActive(true);
+        skillSelectionUI.SetSkillData(unit.Skills.Select(x => x.Base).ToList(), newSkill);
+        skillToLearn = newSkill;
+        state = BattleState.SkillToForget;
+    }
     IEnumerator PerformPlayerSkill()
     {
         state = BattleState.Busy;
@@ -186,7 +234,6 @@ public class BattleSystem : MonoBehaviour
         {
             yield return RunAttack(battleUnits[currentUnit], battleUnits.Where(x => x.unit == playerParty.Units[unit]).FirstOrDefault(), skill);
         }
-        
     }
     IEnumerator RunAttack(BattleUnit sourceUnit, BattleUnit targetUnit, Skill skill)
     {
@@ -194,7 +241,7 @@ public class BattleSystem : MonoBehaviour
 
         if (skill.Base.SkillCategoty == SkillCategory.버프)
         {
-            yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) 자신에게 {skill.Base.Name}을(를) 사용.");
+            //yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) 자신에게 {skill.Base.Name}을(를) 사용.");
             sourceUnit.unit.energy -= skill.PP;
             yield return sourceUnit.Hud.UpdateHP();
             yield return RunSkillEffects(skill, sourceUnit.unit, targetUnit.unit);
@@ -215,7 +262,7 @@ public class BattleSystem : MonoBehaviour
         }
         if (targetUnit.unit.HP <= 0)
         {
-            yield return battleDialog.TypeDialog($"{targetUnit.unit.Base.Name}이(가) 쓰러졌다!");
+            yield return HandleUnitFainted(targetUnit);
         }
         GotoNext();
     }
@@ -255,7 +302,7 @@ public class BattleSystem : MonoBehaviour
 
                 if (targetUnit.unit.HP <= 0)
                 {
-                    yield return battleDialog.TypeDialog($"{targetUnit.unit.Base.Name}이(가) 쓰러졌다!");
+                    yield return HandleUnitFainted(targetUnit);
                 }
             }
         }
@@ -273,14 +320,15 @@ public class BattleSystem : MonoBehaviour
         yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetUnit.unit.Base.Name}에게 {damageDetails.Damage}의 피해를 입혔다. ");
         yield return targetUnit.Hud.UpdateHP();
 
-        if (damageDetails.Fainted)
+        if (targetUnit.unit.HP <= 0)
         {
-            yield return battleDialog.TypeDialog($"{targetUnit.unit.Base.Name}이(가) 쓰러졌다!");
+            yield return HandleUnitFainted(targetUnit);
         }
         GotoNext();
     }
     IEnumerator RunSkillEffects(Skill skill, Unit source, Unit target)
     {
+        state = BattleState.Busy;
         var effects = skill.Base.Effects;
         if(effects.Boosts != null)
         {
@@ -300,10 +348,63 @@ public class BattleSystem : MonoBehaviour
     }
     IEnumerator ShowStatusChanges(Unit unit)
     {
+        state = BattleState.Busy;
         while (unit.StateChanges.Count > 0)
         {
             var message = unit.StateChanges.Dequeue();
             yield return battleDialog.TypeDialog(message);
+        }
+    }
+    IEnumerator HandleUnitFainted(BattleUnit faintedUnit)
+    {
+        yield return battleDialog.TypeDialog($"{faintedUnit.unit.Base.Name}이(가) 쓰러졌다!");
+        yield return new WaitForSeconds(1f);
+
+        if(faintedUnit.IsEnemyUnit)
+        {
+            // Exp Gain
+            int expYield = faintedUnit.unit.Base.ExpYield;
+            int enemyLevel = faintedUnit.unit.Level;
+
+            float trainerBonus = (isTrainerBattle) ? 1.5f : 1f;
+
+            int expGain = Mathf.FloorToInt((expYield * enemyLevel * trainerBonus) / 7);
+
+            foreach(var i in playerBattleUnits)
+            {
+                i.unit.Exp += expGain;
+                yield return battleDialog.TypeDialog($"{i.unit.Base.Name}이(가) {expGain}의 경험치를 얻었습니다.");
+                yield return i.Hud.SetExpSmooth();
+
+                // Check Level Up
+                while (i.unit.CheckForLevelUp())
+                {
+                    yield return battleDialog.TypeDialog($"{i.unit.Base.Name}의 레벨이 {i.unit.Level}(으)로 올랐습니다! ");
+
+                    // Try to learn a new move
+                    var newSkill = i.unit.GetLearnableSkillAtCurLevel();
+
+                    if(newSkill != null)
+                    {
+                        if(i.unit.Skills.Count < UnitBase.MaxNumOfSKills)
+                        {
+                            i.unit.LearnSkill(newSkill);
+                            yield return battleDialog.TypeDialog($"{i.unit.Base.Name}(이)가 {newSkill.Base.Name}(을)를 배웠습니다! ");
+                            battleDialog.SetSkillNames2(battleUnits[currentUnit].unit.Skills, battleUnits[currentUnit].unit);
+                        }
+                        else
+                        {
+                            unitToLearn = i.unit;
+                            yield return battleDialog.TypeDialog($"{i.unit.Base.Name}(이)가 {newSkill.Base.Name}(을)를 배우려고 합니다. ");
+                            yield return battleDialog.TypeDialog($"하지만 {UnitBase.MaxNumOfSKills}개 이상의 기술을 가질 수는 없습니다. ");
+                            yield return ChooseSkillToForget(i.unit, newSkill.Base);
+                            yield return new WaitUntil(() => state != BattleState.SkillToForget);
+                            yield return new WaitForSeconds(1f);
+                        }
+                    }
+                    yield return i.Hud.SetExpSmooth(true);
+                }
+            }
         }
     }
     IEnumerator RunDefanse()
@@ -315,11 +416,12 @@ public class BattleSystem : MonoBehaviour
     }
     IEnumerator ShowEnemyDeadMsg()
     {
+        state = BattleState.Busy;
         battleDialog.EnableEnemySelector(false);
         battleDialog.EnableEnemyInfo(false);
         battleDialog.EnableDialogText(true);
         yield return battleDialog.TypeDialog("해당 유닛은 이미 처치했습니다.");
-        UnityEngine.Debug.Log("해당 유닛은 이미 처치했습니다.");
+        //UnityEngine.Debug.Log("해당 유닛은 이미 처치했습니다.");
         EnemySelect();
     }
     void GotoNext()
@@ -352,6 +454,27 @@ public class BattleSystem : MonoBehaviour
         else if(state == BattleState.EnemySelect)
         {
             HandleEnemySelection();
+        }
+        else if(state == BattleState.SkillToForget)
+        {
+            Action<int> onSkillSelected = (skillIndex) =>
+            {
+                skillSelectionUI.gameObject.SetActive(false);
+                if(skillIndex == UnitBase.MaxNumOfSKills)
+                {
+                    StartCoroutine(battleDialog.TypeDialog($"{unitToLearn.Base.Name}은 {skillToLearn.Name}(을)를 배우지 않았습니다."));
+                }
+                else
+                {
+                    var selectedSkill = unitToLearn.Skills[skillIndex].Base;
+                    StartCoroutine(battleDialog.TypeDialog($"{unitToLearn.Base.Name}이(가) {selectedSkill.Name}대신 {skillToLearn.Name}(을)를 배웠습니다."));
+                    unitToLearn.Skills[skillIndex] = new Skill(skillToLearn);
+                }
+                skillToLearn = null;
+                unitToLearn = null;
+                state = BattleState.Busy;
+            };
+            skillSelectionUI.HandleSkillSelection(onSkillSelected);
         }
     }
 
@@ -399,7 +522,7 @@ public class BattleSystem : MonoBehaviour
             else if(currentAction == 4)
             {
                 //run
-                BattleOver(false);
+                StartCoroutine(TryToEscape());
             }
         }
     }
@@ -419,7 +542,7 @@ public class BattleSystem : MonoBehaviour
         {
             currentSkill -= 1;
         }
-        currentSkill = Mathf.Clamp(currentSkill, 0, battleUnits[currentUnit].unit.Skills.Count - 2);
+        currentSkill = Mathf.Clamp(currentSkill, 0, battleUnits[currentUnit].unit.Skills.Count - 1);
 
         //battleDialog.UpdateSkillSelection(currentSkill, battleUnits[currentUnit].unit.Skills[currentSkill]);
 
@@ -511,11 +634,47 @@ public class BattleSystem : MonoBehaviour
             PlayerSkill();
         }
     }
-
     void BattleOver(bool won)
     {
         state = BattleState.BattleOver;
         OnBattleOver(won);
     }
+    IEnumerator TryToEscape()
+    {
+        state = BattleState.Busy;
 
+        if(isTrainerBattle)
+        {
+            yield return battleDialog.TypeDialog($"도망 못감 ㅅㄱ");
+            GotoNext();
+            yield break;
+        }
+        int playerSpeed = playerParty.Units.Sum(x => x.Base.Speed);
+        int enemySpeed = enemyUnits.Sum(x => x.Base.Speed);
+
+        escapeAttempts++;
+
+        if(enemySpeed < playerSpeed)
+        {
+            yield return battleDialog.TypeDialog($"무사히 도망쳤다!");
+            BattleOver(true);
+        }
+        else
+        {
+            float f = (playerSpeed * 128) / enemySpeed + 30 * escapeAttempts;
+            f = f % 256;
+
+            if(UnityEngine.Random.Range(0,256) < f)
+            {
+                yield return battleDialog.TypeDialog($"무사히 도망쳤다!");
+                BattleOver(true);
+            }
+            else
+            {
+                yield return battleDialog.TypeDialog($"도망 못감 ㅅㄱ");
+                GotoNext();
+                yield break;
+            }
+        }
+    }
 }

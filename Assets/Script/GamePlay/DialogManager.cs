@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
+using UnityEngine.XR.WSA.Input;
 
 public class DialogManager : MonoBehaviour
 {
@@ -21,9 +22,14 @@ public class DialogManager : MonoBehaviour
     {
         Instance = this;
     }
-
+    Color highlightColor;
+    private void Start()
+    {
+        highlightColor = GlobalSettings.i.HighlightedColor;
+    }
     Dialog dialog;
     Action onDialogFinished;
+    IEnumerator enumerator;
     int currentLine = 0;
     bool isTyping;
     
@@ -31,11 +37,11 @@ public class DialogManager : MonoBehaviour
 
 
     [SerializeField] GameObject selectionBox;
-     List<Text> texts;
-    [SerializeField] Color highlightColor;
+    List<Text> texts;
+    
     bool selection;
     int currentSelect = 0;
-    public IEnumerator ShowDialog(Dialog dialog, Action onFinished = null, bool selection = false)
+    public IEnumerator ShowDialog(Dialog dialog, Action onFinished = null, IEnumerator enumerator = null, bool selection = false)
     {
         yield return new WaitForEndOfFrame();
         this.selection = selection;
@@ -44,7 +50,7 @@ public class DialogManager : MonoBehaviour
         IsShowing = true;
         this.dialog = dialog;
         onDialogFinished = onFinished;
-
+        this.enumerator = enumerator;
         dialogBox.SetActive(true);
         StartCoroutine(TypeDialog(dialog.Lines[0]));
     }
@@ -109,7 +115,14 @@ public class DialogManager : MonoBehaviour
             selectionBox.SetActive(false);
 
             if (currentSelect == 0)
+            {
                 onDialogFinished?.Invoke();
+                if(enumerator != null)
+                {
+                    StartCoroutine(enumerator);
+                }
+            }
+                
 
             OnCloseDialog?.Invoke();
             currentSelect = 0;
