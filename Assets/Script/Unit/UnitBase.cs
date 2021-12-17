@@ -116,7 +116,7 @@ public enum Stat
     MagicalDefence,
     Speed,
     Evasion,
-
+    none
 }
 
 [System.Serializable]

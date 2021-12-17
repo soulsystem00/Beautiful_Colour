@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c56799164c622ab4b92f252ff2deba53, type: 3}
+  m_Name: HP3
+  m_EditorClassIdentifier: 
+  name: "\uD551\uD06C\uD3EC\uC158"
+  description: "\uBAA8\uB4E0 \uCCB4\uB825 \uD68C\uBCF5"
+  icon: {fileID: 4402480795973294674, guid: 07ff71d02b1fcec42ba057c15492df24, type: 3}
+  hpAmount: 0
+  restoreMaxHP: 1
+  energyAmount: 0
+  restoreMaxEnergy: 0
+  stat: 0
+  recoverAllstat: 0
+  revive: 0
+  maxRevive: 0

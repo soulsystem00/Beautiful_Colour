@@ -7,7 +7,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
-public enum GameState { FreeRome, Battle, Dialog, Menu, UnitInfo, UnitInfoDetail, Paused, Cutscene }
+public enum GameState { FreeRome, Battle, Dialog, Menu, UnitInfo, UnitInfoDetail, Bag, Paused, Cutscene }
 
 public class GameController : MonoBehaviour
 {
@@ -15,7 +15,10 @@ public class GameController : MonoBehaviour
     [SerializeField] BattleSystem battleSystem;
     [SerializeField] Camera worldCamera;
     [SerializeField] UnitInfoController unitInfoController;
+    [SerializeField] InventoryUI inventoryUI;
+    [SerializeField] PartyScreenUI partyScreenUI;
 
+    [SerializeField] float GameSpeed = 1f;
     GameState state;
     GameState stateBeforePause;
     public static GameController Instance { get; private set; }
@@ -30,11 +33,13 @@ public class GameController : MonoBehaviour
 
         UnitDB.Init();
         SkillDB.Init();
+        Time.timeScale = GameSpeed;
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        partyScreenUI.Init();
         playerActions.OnEncountered += StartBattle;
         battleSystem.OnBattleOver += EndBattle;
 
@@ -155,6 +160,15 @@ public class GameController : MonoBehaviour
         {
             unitInfoController.HandleUpdate();
         }
+        else if(state == GameState.Bag)
+        {
+            Action onBack = () =>
+            {
+                inventoryUI.gameObject.SetActive(false);
+                state = GameState.Menu;
+            };
+            inventoryUI.HandleUpdate(onBack);
+        }
     }
     void onMenuSelected(int selectedItem)
     {
@@ -167,6 +181,8 @@ public class GameController : MonoBehaviour
         else if(selectedItem == 1)
         {
             // inven
+            inventoryUI.gameObject.SetActive(true);
+            state = GameState.Bag;
         }
         else if(selectedItem == 2)
         {

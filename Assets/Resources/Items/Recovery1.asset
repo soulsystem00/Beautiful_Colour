@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c56799164c622ab4b92f252ff2deba53, type: 3}
+  m_Name: Recovery1
+  m_EditorClassIdentifier: 
+  name: "\uB178\uB780\uD3EC\uC158"
+  description: "\uBB3C\uB9AC \uACF5\uACA9\uB825 \uB514\uBC84\uD504 \uC81C\uAC70"
+  icon: {fileID: 8724728256399721647, guid: 07ff71d02b1fcec42ba057c15492df24, type: 3}
+  hpAmount: 0
+  restoreMaxHP: 0
+  energyAmount: 0
+  restoreMaxEnergy: 0
+  stat: 0
+  recoverAllstat: 0
+  revive: 0
+  maxRevive: 0

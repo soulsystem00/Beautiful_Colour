@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.XR.WSA.Input;
 
 public class BattleDialog : MonoBehaviour
 {
@@ -25,19 +26,51 @@ public class BattleDialog : MonoBehaviour
     [SerializeField] SkillInfo skillInfo_Details;
     public event Action ChangeState;
     private int prevSkill;
+
+    public event Action StartTyping;
+    public event Action EndTyping;
+    private string curString;
+    private bool IsTyping = false;
     private void Start()
     {
         highlightedColor = GlobalSettings.i.HighlightedColor;
     }
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.Z) && IsTyping)
+        {
+
+        }
+    }
     public IEnumerator TypeDialog(string dialog)
     {
+        StartTyping?.Invoke();
+        IsTyping = true;
+        curString = dialog;
         dialogText.text = "";
         foreach(var letter in dialog.ToCharArray())
         {
-            dialogText.text += letter;
-            yield return new WaitForSeconds(1f / letterPerSecond);
+            if(IsTyping)
+            {
+                dialogText.text += letter;
+                yield return new WaitForSeconds(1f / letterPerSecond);
+            }
+            else
+            {
+                yield return new WaitForSeconds(1f);
+                yield break;
+            }
         }
         yield return new WaitForSeconds(1f);
+        IsTyping = false;
+        EndTyping?.Invoke();
+    }
+    public void StopTyping()
+    {
+        StopCoroutine(TypeDialog(null));
+        IsTyping = false;
+        dialogText.text = curString;
+        EndTyping?.Invoke();
     }
     public IEnumerator TypeDialog2(string dialog)
     {

@@ -42,6 +42,7 @@ public class Unit
     public Dictionary<Stat, int> StatBoosts { get; private set; }
     public Dictionary<Stat, Queue<BuffInfo>> BuffDic { get; private set; }
     public Queue<string> StateChanges { get; private set; }
+    public event Action OnHPChanged;
     public void init()
     {
         Skills = new List<Skill>();
@@ -119,10 +120,10 @@ public class Unit
         {
             var a = BuffDic[stat].Dequeue();
             a.Turn--;
-            if (a.Val > 0)
-                maxVal = Mathf.Max(maxVal, a.Val);
+            if (a.Value > 0)
+                maxVal = Mathf.Max(maxVal, a.Value);
             else
-                minVal = Mathf.Max(minVal, a.Val);
+                minVal = Mathf.Max(minVal, a.Value);
 
             if (a.Turn > 0)
                 tmp.Enqueue(a);
@@ -134,7 +135,59 @@ public class Unit
         }
 
         StatBoosts[stat] = maxVal + minVal;
+    }
+    public bool CureDeBuff(Stat stat)
+    {
+        Queue<BuffInfo> PositiveBuff = new Queue<BuffInfo>();
 
+        if (BuffDic[stat].Count == 0)
+            return false;
+
+        while (BuffDic[stat].Count != 0)
+        {
+            var buff = BuffDic[stat].Dequeue();
+            if (buff.Value > 0)
+                PositiveBuff.Enqueue(buff);
+        }
+
+        while (PositiveBuff.Count != 0)
+        {
+            BuffDic[stat].Enqueue(PositiveBuff.Dequeue());
+        }
+
+        return true;
+    }
+    public bool CureDeBuffAll()
+    {
+        var statList = Enum.GetValues(typeof(Stat)).Cast<Stat>().ToList();
+        statList.Remove(Stat.none);
+        bool cureCheck = true;
+        foreach(var stat in statList)
+        {
+            if (BuffDic[stat].Count > 0)
+                cureCheck = false;
+        }
+
+        if (cureCheck)
+            return false;
+
+        foreach(var stat in statList)
+        {
+            Queue<BuffInfo> PositiveBuff = new Queue<BuffInfo>();
+            while (BuffDic[stat].Count != 0)
+            {
+                var buff = BuffDic[stat].Dequeue();
+                if (buff.Value > 0)
+                    PositiveBuff.Enqueue(buff);
+            }
+
+            while (PositiveBuff.Count != 0)
+            {
+                BuffDic[stat].Enqueue(PositiveBuff.Dequeue());
+            }
+        }
+
+        return true;
     }
     public void ApplyBoosts(List<StatBoost> statBoosts)
     {
@@ -221,7 +274,7 @@ public class Unit
             damage = 5;
 
         HP -= damage;
-
+        OnHPChanged?.Invoke();
         damagedatails.Damage = damage;
 
         if (HP <= 0)
@@ -250,7 +303,7 @@ public class Unit
         int damage = 2 * cal_Val;
 
         HP -= damage;
-
+        OnHPChanged?.Invoke();
         if(HP <= 0)
         {
             HP = 0;
@@ -279,6 +332,21 @@ public class Unit
 
         return saveData;
     }
+    public void IncreaseHP(int amount)
+    {
+        HP = Mathf.Clamp(HP + amount, 0, MaxHp);
+        OnHPChanged?.Invoke();
+    }
+    public void IncreaseMP(int amount)
+    {
+        energy = Mathf.Clamp(energy + amount, 0, MaxEnergy);
+        OnHPChanged?.Invoke();
+    }
+    public void IncreaseExp(int amount)
+    {
+        Exp += amount;
+        OnHPChanged?.Invoke();
+    }
 }
 
 public class DamageDetails
@@ -291,11 +359,11 @@ public class DamageDetails
 
 public class BuffInfo
 {
-    public int Val { get; set; }
+    public int Value { get; set; }
     public int Turn { get; set; }
     public BuffInfo(int val, int turn)
     {
-        this.Val = val;
+        this.Value = val;
         this.Turn = turn;
     }
 }

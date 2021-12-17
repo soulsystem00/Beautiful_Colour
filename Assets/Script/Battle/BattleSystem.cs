@@ -10,7 +10,7 @@ using UnityEditor.Connect;
 
 public enum BattleState
 {
-    Start, PlayerAction, PlayerSkill, EnemySelect, EnemySkill, Busy, PlayerDefanse, SkillToForget, BattleOver, 
+    Start, PlayerAction, PlayerSkill, EnemySelect, EnemySkill, Busy, PlayerDefanse, SkillToForget, BattleOver, Typing
 }
 
 public class BattleSystem : MonoBehaviour
@@ -40,11 +40,22 @@ public class BattleSystem : MonoBehaviour
     List<BattleUnit> battleUnits;
     List<BattleUnit> playerBattleUnits;
     List<BattleUnit> enemyBattleUnits;
+
+    BattleState prevState;
     private void Awake()
     {
         battleDialog.ChangeState += () =>
         {
             state = BattleState.PlayerAction;
+        };
+        battleDialog.StartTyping += () =>
+        {
+            prevState = state;
+            state = BattleState.Typing;
+        };
+        battleDialog.EndTyping += () =>
+        {
+            state = prevState;
         };
     }
     public void StartBattle(UnitParty playerParty, List<Unit> enemyUnits)
@@ -317,7 +328,7 @@ public class BattleSystem : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         var damageDetails = targetUnit.unit.TakeDamage(damage, sourceUnit.unit);
-        yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetUnit.unit.Base.Name}에게 {damageDetails.Damage}의 피해를 입혔다. ");
+        yield return battleDialog.TypeDialog($"{sourceUnit.unit.Base.Name}이(가) {targetUnit.unit.Base.Name}에게 {damageDetails.Damage}의 피해를 입혔다.");
         yield return targetUnit.Hud.UpdateHP();
 
         if (targetUnit.unit.HP <= 0)
@@ -372,7 +383,7 @@ public class BattleSystem : MonoBehaviour
 
             foreach(var i in playerBattleUnits)
             {
-                i.unit.Exp += expGain;
+                i.unit.IncreaseExp(expGain);
                 yield return battleDialog.TypeDialog($"{i.unit.Base.Name}이(가) {expGain}의 경험치를 얻었습니다.");
                 yield return i.Hud.SetExpSmooth();
 
@@ -466,6 +477,7 @@ public class BattleSystem : MonoBehaviour
                 }
                 else
                 {
+                    UnityEngine.Debug.Log(unitToLearn.Skills[skillIndex].Base);
                     var selectedSkill = unitToLearn.Skills[skillIndex].Base;
                     StartCoroutine(battleDialog.TypeDialog($"{unitToLearn.Base.Name}이(가) {selectedSkill.Name}대신 {skillToLearn.Name}(을)를 배웠습니다."));
                     unitToLearn.Skills[skillIndex] = new Skill(skillToLearn);
@@ -476,7 +488,14 @@ public class BattleSystem : MonoBehaviour
             };
             skillSelectionUI.HandleSkillSelection(onSkillSelected);
         }
-    }
+        else if(state == BattleState.Typing)
+        {
+            if(Input.GetKeyDown(KeyCode.Z))
+            {
+                battleDialog.StopTyping();
+            }
+        }
+   }
 
     void HandleActionSelection()
     {

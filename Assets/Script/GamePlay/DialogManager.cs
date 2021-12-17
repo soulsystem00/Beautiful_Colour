@@ -54,6 +54,19 @@ public class DialogManager : MonoBehaviour
         dialogBox.SetActive(true);
         StartCoroutine(TypeDialog(dialog.Lines[0]));
     }
+    public IEnumerator ShowDialogText(string text, bool waitForInput = true)
+    {
+        IsShowing = true;
+        dialogBox.SetActive(true);
+        yield return TypeDialog(text);
+
+        if(waitForInput)
+        {
+            yield return new WaitUntil(() => Input.GetKeyDown(KeyCode.Z));
+        }
+        dialogBox.SetActive(false);
+        IsShowing = false;
+    }
     public void HandleUpdate()
     {
         if (selectionBox.activeSelf)
@@ -86,6 +99,12 @@ public class DialogManager : MonoBehaviour
                         OnCloseDialog?.Invoke();
                     }
                 }
+            }
+            else if(Input.GetKeyDown(KeyCode.Z) && isTyping)
+            {
+                StopCoroutine(TypeDialog(null));
+                dialogText.text = dialog.Lines[currentLine];
+                isTyping = false;
             }
         }
         
@@ -134,8 +153,15 @@ public class DialogManager : MonoBehaviour
         dialogText.text = "";
         foreach (var letter in line.ToCharArray())
         {
-            dialogText.text += letter;
-            yield return new WaitForSeconds(1f / lettersPerSecond);
+            if(isTyping)
+            {
+                dialogText.text += letter;
+                yield return new WaitForSeconds(1f / lettersPerSecond);
+            }
+            else
+            {
+                yield break;
+            }
         }
         isTyping = false;
     }

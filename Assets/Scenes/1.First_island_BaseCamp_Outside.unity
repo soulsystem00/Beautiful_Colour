@@ -857,7 +857,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7765468302779346198, guid: e4e1160c0ca1757479d5e204abfff87a, type: 3}
       propertyPath: dialog.lines.Array.data[0]
-      value: "\uC774\uAC83\uC740"
+      value: "\uAC00\uB098\uB2E4\uB77C\uB9C8\uBC14\uC0AC\uC544\uC790\uCC28\uCE74\uD0C0\uD30C\uD558\uAC70\uB108\uB354\uB7EC\uBA38\uBC84\uC11C\uC5B4\uC800\uCC98\uCEE4\uD130\uD37C\uD5C8"
       objectReference: {fileID: 0}
     - target: {fileID: 7765468302779346198, guid: e4e1160c0ca1757479d5e204abfff87a, type: 3}
       propertyPath: dialog.lines.Array.data[1]

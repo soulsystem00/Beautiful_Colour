@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,21 +7,20 @@ public class UnitParty : MonoBehaviour
 {
     [SerializeField] List<Unit> units;
 
-    public List<Unit> Units { get => units; set => units = value; }
+    public event Action OnUpdated;
+    public List<Unit> Units { get => units; set { units = value; OnUpdated?.Invoke(); } }
 
-
+    
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         foreach(var unit in Units)
         {
             unit.init();
         }
     }
-
-    // Update is called once per frame
-    void Update()
+    public static UnitParty GetUnitParty()
     {
-        
+        return FindObjectOfType<PlayerActions>().GetComponent<UnitParty>();
     }
 }
